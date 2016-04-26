@@ -1,9 +1,9 @@
 
 ## 客户端 - 基于 electron
-1) cd cli/cli/
-2) 运行 npm run dev 启动开发环境
-3) 运行 npm run test 启动测试环境
-4) 运行 npm run prod 启动生产环境
+- cd cli/cli/
+- 运行 npm run dev 启动开发环境
+- 运行 npm run test 启动测试环境
+- 运行 npm run prod 启动生产环境
 
 ## env - 环境
 - common.js 是公共的配置.
@@ -12,11 +12,11 @@
 - test.js是测试环境配置.
 
 ## main - electron 主进程所跑的东西
-1) account 是用户模块
-2) window.js 创建渲染窗口
-3) token.js 检查 token 状态
-4) strong.js 本地数据持久化
-5) events.js 事件处理
+- account 是用户模块
+- window.js 创建渲染窗口
+- token.js 检查 token 状态
+- strong.js 本地数据持久化
+- events.js 事件处理
 
 ## public - electron 子进程所跑的东西(也就是看到页面效果)
 就是常规的web开发的目录结构
@@ -27,7 +27,7 @@ package.js - 包含各种所需模块以及项目的配置信息(名称、版本
 ## 客户端打包 - 未开始
 
 
-# gulp 使用方法
+## gulp 使用方法
 npm install 安装gulp依赖库,配置在package.json中
 
 gulp copy
