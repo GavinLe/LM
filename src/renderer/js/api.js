@@ -1,7 +1,4 @@
 /**
- * Created by gavin on 16/4/11.
- */
-/**
  * Created by gavin on 16/4/8.
  */
 
@@ -10,17 +7,16 @@ var request = require('request');
 var ipc = require('electron').ipcRenderer;
 var fs = require('fs');
 var path = require('path');
-var CONFIG_FILE = path.join(__dirname, '../../env/build.json');
+var CONFIG_FILE = path.join(__dirname, '../../../resources/build.json');
 console.log(CONFIG_FILE);
 var buffer = {};
 var ENV = ipc.sendSync('get ENV config');
 
-
 var readConfig = function () {
   buffer = JSON.parse(fs.readFileSync(CONFIG_FILE).toString());
-  var api = buffer.server[ENV].api;
+  var config = buffer.server[ENV];
   buffer.server = {};
-  buffer.server.api = api;
+  buffer.server = config;
   return buffer;
 };
 module.exports.readConfig = readConfig;
@@ -124,7 +120,7 @@ module.exports.sign_in_sms = buildAPI(serviceServer, 'api/sign/in/sms/', 'GET');
 module.exports.sign_in_password = buildAPI(serviceServer, 'api/sign/in/password/', 'GET');
 module.exports.check_token = buildAPI(serviceServer, 'api/check/token/', 'GET');
 module.exports.set_password = buildAPI(serviceServer, 'api/set/password/', 'GET');
-module.exports.set_profile = buildAPI(serviceServer, 'api/set/profile/', 'GET');
-module.exports.get_profile = buildAPI(serviceServer, 'api/get/profile/', 'GET');
+//module.exports.set_profile = buildAPI(serviceServer, 'api/set/profile/', 'GET');
+//module.exports.get_profile = buildAPI(serviceServer, 'api/get/profile/', 'GET');
 module.exports.sign_out = buildAPI(serviceServer, 'api/sign/out/', 'GET');
 module.exports.buy_btn = buildAPI(serviceServer, 'api/buy/btn/', 'POST');

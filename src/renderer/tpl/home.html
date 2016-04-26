@@ -69,9 +69,9 @@
                     <!-- 菜单栏 模板-->
                     <script id="resourcesLiTemplate" type="x-tmpl-mustache">
                         {{#data}}
-                        <li class="disabled list-group-item" id="{{ resource_id }}" data-resource_id="{{ resource_id }}" >
-                            <a href="#" class="ellipsis mw-80 disabled" title="{{ provider_name }}">{{ provider_name }}</a>
-                            <span class="badge badge-normal text-right">{{ total_count }}</span>
+                        <li class="disabled list-group-item" id="{{ resource_id }}" resource_id="{{ resource_id }}" >
+                            <span name="provider_name" class="ellipsis mw-80 disabled" title="{{ provider_name }}">{{ provider_name }}</span>
+                            <span name="badge" class="badge badge-normal text-right">{{ total_count }}</span>
                         </li>
                         {{/data}}
                     </script>
@@ -119,9 +119,11 @@
     window.shell = electron.shell;
     window._ = require('underscore');
     var userData = ipc.sendSync('get user data');
+    var userInfo = ipc.sendSync('get user info');
     var api = require('../js/api.js');
     var BM_CONFIG = api.readConfig();
     var API_URL = BM_CONFIG.server.api;
+    console.log(userInfo);
 </script>
 
 <script src="../libs/jquery-ui-1.12.0/jquery-ui.js" ></script>
@@ -143,6 +145,9 @@ log_service.trackPageView('home');
 $(document).ready(function() {
   // 加载 dialog 模板
   $("#includedContent").load("./dialog.html");
+
+  // log_service.setUserId
+  log_service.setUserId(userInfo.phone)
 });
 </script>
 

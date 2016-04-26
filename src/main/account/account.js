@@ -13,6 +13,7 @@ module.exports.init = function (settings) {
         console.log('用户登录级别变化', oldAuthLevel, '==>', newAuthLevel);
         if (newAuthLevel == 0) {
             windows.open('home', 'home.html', true, { width: 1100, height: 600 });
+            //windows.open('test', 'test.html', true, { width: 1100, height: 600 });
             windows.close('account');
         } else if (newAuthLevel == 1) {
             windows.open('account', 'set_password.html');

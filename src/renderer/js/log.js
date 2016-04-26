@@ -9,9 +9,15 @@
   }}var l=["init","logEvent","logRevenue","setUserId","setUserProperties","setOptOut","setVersionName","setDomain","setDeviceId","setGlobalUserProperties","identify","clearUserProperties"];
   for(var p=0;p<l.length;p++){u(l[p])}e.amplitude=n})(window,document);
 
-amplitude.init(BM_CONFIG.AMPLITUDE_KEY);
+console.log('use amplitude key:', BM_CONFIG.server.AMPLITUDE_KEY);
+
+amplitude.init(BM_CONFIG.server.AMPLITUDE_KEY);
 
 var log_service = {};
+
+log_service.setUserId = function (userId) {
+  amplitude.setUserId(userId);
+};
 
 log_service.trackPageView = function (url) {
   var evt = "PAGE_VIEW(" + url + ")";
@@ -26,3 +32,4 @@ log_service.trackEvent = function (category, action, params) {
 };
 
 
+module.exports.log_service = log_service;

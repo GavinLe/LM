@@ -24,17 +24,16 @@ $(document).ready(function(){
           };
           loading.showLoading();
           console.log('send msg pdf');
-          ipcRenderer.send('downloadPDF', params);
-          ipcRenderer.on('downloadpdfsuccessreply', function (event, arg) {
+          ipc.send('downloadPDF', params);
+          ipc.on('downloadpdfsuccessreply', function (event, arg) {
               loading.hideLoading();
-              console.log('成功');
-              ipcRenderer.send('open pdf', arg);
-              ipcRenderer.removeListener('downloadpdfsuccessreply', arguments.callee);
+              ipc.send('open pdf', arg);
+              ipc.removeListener('downloadpdfsuccessreply', arguments.callee);
           });
-          ipcRenderer.on('downloadpdffailreply', function (event, message) {
+          ipc.on('downloadpdffailreply', function (event, message) {
               loading.hideLoading();
-              notie.alert(2, '下载失败'+message);
-              ipcRenderer.removeListener('downloadpdffailreply', arguments.callee);
+              notie.alert(2, '下载失败' + message);
+              ipc.removeListener('downloadpdffailreply', arguments.callee);
           });
     });
 
@@ -149,7 +148,7 @@ $(document).ready(function(){
         $('#spPackCode').val('');
         $('#realityProvider').val('');
         $('#realProviderSearch').modal({backdrop:true});
-
+        $('.realProviderSearchParams').removeClass('hide');
         log_service.trackEvent('真实货主查询', 'click_query');
     });
 
@@ -281,39 +280,68 @@ $(document).ready(function(){
         var list = $(this).data('contacts').split(';');
     });
 
+    function updateResource (headers, ds) {
+        ds.getResourceHeaders(function (h) {
+            var new_headers = h;
+            for (var i = 0; i < headers.length; i++) {
+                for (var j = 0; j < new_headers.length; j++) {
+                    // 比较 new_headers_list和headers_list相同的provider_name的resource_id是否相同
+                    if (headers[i].provider_name == new_headers[j].provider_name
+                        && headers[i].resource_id != new_headers[j].resource_id) {
+                        var row = new_headers[j];
+                        var ele = $('#' + headers[i].resource_id);
+                        $(ele).find('span[name="provider_name"]').attr({
+                            'sid': new_headers[j].resource_id,
+                            'sold_id': headers[i].resource_id
+                        });
+                        $(ele).find('span[name="badge"]').removeClass('badge-normal').addClass('badge-update');
+
+                        $(ele).find('span[name="provider_name"]').unbind();
+                        $(ele).find('span[name="provider_name"]').bind('click',{'sid': new_headers[j].resource_id, 'sold_id': headers[i].resource_id, 'row': row}, function (e) {
+                            console.log('update resource');
+                            var sid = e.data.sid;
+                            var el = $('#' + e.data.sold_id);
+                            // 当前资源单不可点击
+                            el.addClass('disabled');
+                            $(el).find('span[name="provider_name"]').addClass('disabled').removeClass('bm-pointer');
+                            ds.getResource(sid, function (data) {
+                                el.removeClass('disabled');
+                                $(el).find('span[name="provider_name"]').removeClass('disabled').addClass('bm-pointer');
+                                $(el).find('span[name="badge"]').removeClass('badge-update').addClass('badge-normal').empty().html(e.data.row.total_count);
+                                $(el).find('span[name="provider_name"]').unbind('click');
+
+                                // 显示供应商信息
+                                var template_provider = $('#providerInfoTemplate').html();
+                                Mustache.parse(template_provider);
+                                var rendered_provider = Mustache.render(template_provider, e.data.row);
+                                $('#providerInfo').empty().html(rendered_provider);
+                                // 激活当前资源单
+                                $(el).siblings().removeClass('active select-li-bgc');
+                                $(el).addClass('active select-li-bgc');
+
+                                // 显示 资源内容
+                                var hot = null;
+                                console.log("resource" + row.resource_id + " clicked.");
+                                if (hot != null) {
+                                    hot.destroy();
+                                    console.log("resource" + row.resource_id + " destroyed.");
+                                }
+                                hot = loadTable('example1', data);
+                                log_service.trackEvent('RESOURCE', 'click-item', {'resource_id': e.data.row.resource_id});
+                            });
+                        })
+                    }
+                }
+            }
+        })
+    }
 
     function initCheckTimer(headers, ds) {
-      //每三分中获取新的new_headers_list
       setInterval(function(){
-        ds.getResourceHeaders(function(h){
-          var new_headers = h;
-          for (var i = 0; i<headers.length; i++){
-            for (var j = 0; j < new_headers.length; j++){
-              // 比较 new_headers_list和headers_list相同的provider_name的resource_id是否相同
-              if (headers[i].provider_name == new_headers[j].provider_name
-                  && headers[i].resource_id != new_headers[j].resource_id)
-              {
-                $li = $('#'+headers[i].resource_id);
-                $($li).find(' > span').attr({'id':new_headers[j].resource_id,'old_id': headers[i].resource_id});
-                $($li).find(' > span').removeClass('badge-normal').addClass('badge-update');
-
-                $('#'+headers[i].resource_id).find(' > span').on('click', {id: new_headers[j].resource_id, old_id: headers[i].resource_id} ,function(e){
-                    var resourceId = e.data.id;
-                    var old_id = e.data.old_id;
-                    console.log(resourceId);
-                    // todo: progress or disable provider button???
-                    ds.getResource(resourceId,function(){
-                        $('#'+old_id).attr('id', resourceId);
-                        $('#'+old_id).find('a').click();
-                        $(this).removeClass('badge-update').addClass('badge-normal');
-                    });
-                });
-              }
-            }
-          }
-        })
-      }, 1000*60*5);
+        updateResource(headers, ds);
+      }, 1000*60*5); // 1000*60*5
     }
+
 
     function loadResources() {
       var $res = $('#oyResouces');
@@ -331,52 +359,36 @@ $(document).ready(function(){
         $res.empty().html(rendered);
 
         var global_hot = null;
-        var isLoading = false;
 
         // 取资源
         headers.forEach(function (row) {
           var $r = $('#'+ row.resource_id);
 
           datastore.getResource(row.resource_id, function(data){
-            $r.removeClass('disabled');
-            $($r).find('a').removeClass('disabled');
-          });
+              $r.removeClass('disabled');
+              $($r).find('span[name="provider_name"]').removeClass('disabled').addClass('bm-pointer');
+              $($r).find('span[name="provider_name"]').unbind();
+              $($r).find('span[name="provider_name"]').click(function () {
+                // 显示供应商信息
+                var template_provider = $('#providerInfoTemplate').html();
+                Mustache.parse(template_provider);
+                var rendered_provider = Mustache.render(template_provider, row);
+                $('#providerInfo').empty().html(rendered_provider);
 
-          $($r).find('a').click(function (e) {
-            if (isLoading) {
-              console.log('Resource is loading, ignore');
-              return;
-            }
+                // 激活当前资源单
+                $($r).siblings().removeClass('active select-li-bgc');
+                $($r).addClass('active select-li-bgc');
 
-            isLoading = true;
-
-            // 显示供应商信息
-            var template_provider = $('#providerInfoTemplate').html();
-            Mustache.parse(template_provider);
-            var rendered_provider = Mustache.render(template_provider, row);
-            $('#providerInfo').empty().html(rendered_provider);
-
-            // 激活当前资源单
-            $($r).siblings().removeClass('active select-li-bgc');
-            $($r).addClass('active select-li-bgc');
-
-            // 显示 资源内容
-            var hot = global_hot;
-            global_hot = null;
-            console.log("resource" + row.resource_id + " clicked.");
-            datastore.getResource(row.resource_id, function(data) {
-              if (hot != null) {
-                hot.destroy();
-                console.log("resource" + row.resource_id + " destroyed.");
-              }
-              global_hot = loadTable('example1', data);
-
-              setTimeout(function () {
-                isLoading = false;
-              }, 100);
-            });
-
-            log_service.trackEvent('RESOURCE', 'click-item', {'resource_id': row.resource_id});
+                // 显示 资源内容
+                var hot = global_hot;
+                console.log("resource" + row.resource_id + " clicked.");
+                if (hot != null) {
+                    hot.destroy();
+                    console.log("resource" + row.resource_id + " destroyed.");
+                }
+                global_hot = loadTable('example1', data);
+                log_service.trackEvent('RESOURCE', 'click-item', {'resource_id': row.resource_id});
+              });
           });
         });
       });
@@ -384,14 +396,6 @@ $(document).ready(function(){
 
     loadResources();
 
-    //console.log('======autocomplete======');
-    //var tags = ['aaa', 'bbb', 'ccc'];
-    //$('#autocomplete').autocomplete({ source: function( request, response ) {
-    //      var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
-    //      response( $.grep( tags, function( item ){
-    //          return matcher.test( item );
-    //      }) );
-    //  } });
 
 
 });

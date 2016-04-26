@@ -6,11 +6,15 @@ var electron = require('electron');
 var app = electron.app;
 var argv = require('yargs').argv;
 var events = require('./utils/events.js').events;
-console.log(argv.p.toUpperCase());
+
 global.ENV = argv.p.toUpperCase() || 'DEV';
 
 app.on('ready', function (){
     events.emit('start');
+});
+app.on('quit', function() {
+    settings.save();
+    console.log('用户设置已保存，退出应用。');
 });
 
 var mainEvents = require('./mainEvents.js');
@@ -30,7 +34,4 @@ account.init(settings.loadConfig());
 var resourceList = require('./resource-list/init.js');
 resourceList.init(settings.loadConfig());
 
-ipcMain.on('get ENV config', function(event){
-    event.returnValue = global.ENV;
-});
 console.log("start electron api ENV:", global.ENV);

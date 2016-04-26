@@ -20,8 +20,11 @@ module.exports.init = function(){
         helper.open(pdfPath);
     });
 
-    ipc.on('get user data', function(event){
-        console.log( app.getPath('userData'));
+    ipc.on('get user data', function (event) {
         event.returnValue = app.getPath('userData');
     });
-}
+
+    ipc.on('get ENV config', function(event){
+        event.returnValue = global.ENV;
+    });
+};

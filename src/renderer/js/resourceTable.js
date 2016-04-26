@@ -94,7 +94,7 @@ function loadTable(id, data) {
   });
 
   function FactoryResCodeRenderer (instance, td, row, col, prop, value, cellProperties) {
-    if (value.length > 0) {
+    if (value && value.length > 0) {
       var a = document.createElement('A');
       a.href='javascript:;';
       a.innerText = value;
@@ -122,7 +122,7 @@ function loadTable(id, data) {
 
   function BuyButton(instance, td, row, col, prop, value, cellProperties){
     var a;
-    if (value.length > 0){
+    if (value && value.length > 0){
       a = document.createElement('a');
       a.href  =  value;
       a.textContent="购买";
@@ -161,12 +161,28 @@ function loadTable(id, data) {
         classColor += ' white';
     }
     span.className=classColor;
+    Handsontable.Dom.addEvent(span, 'click', function (e){
+        e.preventDefault();
+        var rowData = hot.getDataAtRow(row);
+         var params = {
+            product_name: rowData[0],
+            shop_sign: rowData[1],
+            spec: rowData[3],
+            manufacturer: rowData[2],
+            weight: rowData[4],
+            warehouse: rowData[6],
+            pack_code: rowData[8]
+        };
+        tools.realProviderSearch(params);
+        //log_service.trackEvent('TABLE', '仓库查看', {value: value});
+        //return tools.warehouseSearch(a.text, true);
+    });
     Handsontable.Dom.empty(td);
     td.appendChild(span);
   }
 
   function warehouseButton(instance, td, row, col, prop, value, cellProperties){
-    if (value.length > 0) {
+    if (value && value.length > 0) {
       var a = document.createElement('A');
       a.href='javascript:;';
       a.innerText = value;
@@ -188,7 +204,7 @@ function loadTable(id, data) {
   }
 
   function trademarkButton(instance, td, row, col, prop, value, cellProperties){
-    if (value.length > 0) {
+    if (value && value.length > 0) {
       var a = document.createElement('A');
       a.href='javascript:;';
       a.innerText = value;
@@ -212,7 +228,7 @@ function loadTable(id, data) {
   }
 
   function providerNameLink(instance, td, row, col, prop, value, cellProperties){
-    if (value.length > 0) {
+    if (value && value.length > 0) {
       var a = document.createElement('A');
       a.href='javascript:;';
       a.innerText = value;

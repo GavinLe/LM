@@ -4,6 +4,13 @@
 
 /* Common css */
 /* css 文本过长自动截取 */
+
+a {color: #78afd3;}
+a:link {  color: #78afd3;  text-decoration: none; }
+a:visited {  color: #78afd3;  text-decoration: none;  }
+a:hover {  color: #009688;  text-decoration: underline;  }
+a:active {  COLOR: #009688;  text-decoration: underline;  }
+
 .ellipsis{
     display: inline-block;
     max-width:120px;
@@ -17,8 +24,14 @@
 .mw-160 {max-width: 159px;}
 
 .mb-5{
-    margin: 5px 0px 0px;
+    margin: 5px 0px 0px 0px;
 }
+.bm-pointer {cursor: pointer; color: #78afd3;}
+.bm-pointer:link {  color: #78afd3;  text-decoration: none; }
+.bm-pointer:visited {  color: #78afd3;  text-decoration: none;  }
+.bm-pointer:hover {  color: #009688;  text-decoration: underline;  }
+.bm-pointer:active {  COLOR: #009688;  text-decoration: underline;  }
+
 /*Common css end*/
 
 /* sign-in start */
@@ -28,14 +41,27 @@
   border: 1px solid #e4e4e4;
   min-width: 360px;
   max-width: 600px;
-  margin: 0px auto;
+  margin: 50px auto;
   text-align: center;
-  min-height: 600px;
+  min-height: 450px;
 }
 .sign-in .login_page .page-header {
   border-bottom: none;
 }
-.sign-in .login_page .page-header h1,
+.sign-in .login_page .page-header h1 {
+    color: #00695c;font-size: 55px;
+}
+.sign-in .login_page .page-header .desc { font-size: 20px; }
+.sign-in .login_page .page-header .sp-title {
+    display:inline-block;
+    width: 200px;
+    border-bottom: 2px solid #009966;
+}
+.sign-in .login_page .page-header .sp-title span {
+    font-size: 16px;
+    color: #009966
+}
+
 .sign-in .login_page .page-header small {
   color: #B94E48;
 }
@@ -76,10 +102,10 @@
 }
 .sign-in .login_page .btn_code {
   width: 115px;
-  background: #fff;
+  background-color: #0099cc;
   padding: 0;
   margin: -2px 0 0;
-  color: #333;
+  color: #fff;
 }
 .sign-in .login_page a {
   cursor: pointer;
@@ -98,10 +124,10 @@
   border-radius: 5px;
 }
 .sign-in .login_page .login_btn a.sms {
-  background-color: #d92626;
+  background-color: #00897b;
 }
 .sign-in .login_page .login_btn a.password {
-  background-color: #d92626;
+  background-color: #00897b;
 }
 
 .sign-in .login_page .pw {  min-width: 350px;  }
@@ -171,7 +197,7 @@
 .bm {padding: 0; margin: 0;}
 /* 导航条 start */
 .bm .bm-title {
-    background-color: #009688;
+    background-color: #00897d;
     margin: 0;
     padding: 10px 10px;
 }
@@ -207,7 +233,7 @@
     background-color: #e0f2f1;
 }
 
-.bm .bm-menu .panel-collapse ul .select-li-bgc {background-color: #B2DFDB;}
+.bm .bm-menu .panel-collapse ul .select-li-bgc {background-color: #B2DFDB; color: #00897b;}
 .bm .bm-menu .list-group-item {padding:10px 10px;}
 .bm .bm-menu .panel-collapse ul li {background-color: #e0f2f1;}
 .bm .bm-menu .panel>.list-group:last-child .list-group-item:last-child,
@@ -386,6 +412,3 @@ body .ui-autocomplete .ui-menu-item .ui-state-active{
     background-color: #e0f2f1;
 }
 /* 覆盖 ui-autocomplete css end  */
-
-
-

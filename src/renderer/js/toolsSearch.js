@@ -38,13 +38,16 @@
                 loading.hideLoading();
                 if (result.code == 0) {
                     if (result.data){
+
                         // 解析模板
+                        $('.realProviderSearchParams').addClass('hide');
                         $('#realityProvider').val(result.data.provider_name);
+
                     }else{
                         notie.alert(3, '没查到符合条件的数据');
                     }
                 } else {
-                    notie.alert(3,data.message);
+                    notie.alert(3,result.message);
                 }
             })
             .error(function(err){
@@ -224,5 +227,5 @@
         guaranteeSearch:guaranteeSearch,
         statusSearch:statusSearch,
         specialCharactersHandle:specialCharactersHandle
-    }
+    };
 })(jQuery, notie);

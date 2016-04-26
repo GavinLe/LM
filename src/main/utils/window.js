@@ -11,7 +11,7 @@ var all = {};
 module.exports.all = all;
 
 var rootPath = path.resolve(path.join(__dirname, '../../renderer/tpl/'));
-var windowOptions = {width: 800, height:600};
+var windowOptions = {width: 900, height:600};
 
 module.exports.open = function (name, html, app, optinon) {
     optinon =  Object.assign(windowOptions, optinon);
@@ -27,7 +27,8 @@ module.exports.open = function (name, html, app, optinon) {
     }
     var windowUrl = 'file://' + path.join(rootPath, html);
     console.log('window render html:' + windowUrl);
-    all[name].loadURL(windowUrl);
+    all[name].loadURL(windowUrl); //windowUrl
+    all[name].show();
 };
 
 module.exports.close = function (name) {
