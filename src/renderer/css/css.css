@@ -1,0 +1,391 @@
+/**
+ * Created by gavin on 16/3/16.
+ */
+
+/* Common css */
+/* css 文本过长自动截取 */
+.ellipsis{
+    display: inline-block;
+    max-width:120px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.mw-60 {max-width: 59px;}
+.mw-80 {max-width: 79px;}
+.mw-160 {max-width: 159px;}
+
+.mb-5{
+    margin: 5px 0px 0px;
+}
+/*Common css end*/
+
+/* sign-in start */
+.sign-in .body {  display: flex;  flex-direction: column;  }
+.sign-in .login_page {
+  background-color: #f2f2f2;
+  border: 1px solid #e4e4e4;
+  min-width: 360px;
+  max-width: 600px;
+  margin: 0px auto;
+  text-align: center;
+  min-height: 600px;
+}
+.sign-in .login_page .page-header {
+  border-bottom: none;
+}
+.sign-in .login_page .page-header h1,
+.sign-in .login_page .page-header small {
+  color: #B94E48;
+}
+.sign-in .login_page .page-header hr {
+  border-top-color: #B94E48;
+  margin: 2px 0;
+}
+.sign-in .login_page .page-header small {
+  position: relative;
+  top: -12px;
+}
+.sign-in .login_page .page-header h2 {
+  margin-top: 50px;
+  font-size: 18px;
+}
+.sign-in .login_page .new_user {
+  margin-top: 10px;
+  margin-bottom: 35px;
+}
+.sign-in .login_page .red_font {
+  color: #cc3300;
+}
+.sign-in .login_page input,
+.sign-in .login_page button {
+  padding-left: 15px;
+  margin-bottom: 10px;
+  width: 200px;
+  height: 40px;
+  border: none;
+}
+.sign-in .login_page button {
+  background: #09c;
+  color: #fff;
+}
+.sign-in .login_page .w80 {
+  width: 80px;
+  margin-right: 5px;
+}
+.sign-in .login_page .btn_code {
+  width: 115px;
+  background: #fff;
+  padding: 0;
+  margin: -2px 0 0;
+  color: #333;
+}
+.sign-in .login_page a {
+  cursor: pointer;
+}
+.sign-in .login_page .login_btn {
+  margin-bottom: 20px;
+}
+.sign-in .login_page .login_btn a,
+.sign-in .login_page .login_btn a:visited {
+  padding: 8px 85px;
+  color: #fff;
+  font-size: 16px;
+  font-family: '微软雅黑';
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.sign-in .login_page .login_btn a.sms {
+  background-color: #d92626;
+}
+.sign-in .login_page .login_btn a.password {
+  background-color: #d92626;
+}
+
+.sign-in .login_page .pw {  min-width: 350px;  }
+.sign-in .login_page .pw dl {  margin-top: 65px;  }
+.sign-in .login_page .pw dl dt label {
+  display: inline-block;
+  width: 68px;
+  font-weight: normal;
+}
+.sign-in .login_page .pw dl dt label.vt {vertical-align: top;  }
+.sign-in .login_page.pw dl dt input[type=text],
+.sign-in .login_page .pw dl dt textarea {
+  width: 300px;
+  height: 30px;
+  padding-left: 15px;
+  border: none;
+}
+.sign-in .login_page .pw dl dt textarea {
+  min-height: 90px;
+  max-height: 180px;
+  max-width: 300px;
+}
+.sign-in .login_page .pw dl dt.user_name {  height: 65px;  }
+.sign-in .login_page .pw dl dt.user_name b {
+  display: inline-block;
+  width: 200px;
+  text-align: left;
+}
+.sign-in .login_page .pw dl dt.company_name { height: 70px;  }
+.sign-in .login_page .pw dl dt.btn_pw { margin-top: 5px;  }
+.sign-in .login_page .pw dl dt.btn_pw button {
+  width: 160px;
+  height: 40px;
+  margin-left: 30px;
+  background: #0099cc;
+  color: #fff;
+}
+/* sign-in end */
+
+
+
+
+/* 灯的颜色状态 start */
+.circle {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    vertical-align:middle;
+}
+.red {background: red;}
+.yellow {background: yellow;}
+.blue {background: blue;}
+.green {background: green;}
+.white {background: #ccc;}
+
+.circle-small {
+  width: 12px;
+  height: 12px;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+/* 灯的颜色状态 end */
+
+.bm {padding: 0; margin: 0;}
+/* 导航条 start */
+.bm .bm-title {
+    background-color: #009688;
+    margin: 0;
+    padding: 10px 10px;
+}
+
+.bm .bm-title .title-logo {
+    font-size: 18px;
+    color: white;
+    line-height: 34px;
+}
+.bm .bm-title .bm-btn-title {background-color: #009688;color: white;}
+/* 导航条 end */
+
+.sg-helper {
+    margin: 0;
+    font-size: 10px;
+    display: flex;
+}
+
+/* 菜单栏 start */
+
+.bm .bm-menu {padding: 0; width: 150px;}
+.bm .bm-menu .tree-head {
+    background-color: #00897b;
+    color: white;
+    border-radius:0;
+    border-bottom: 1px solid #009587;
+}
+.bm .bm-menu .panel-collapse ul {
+    height:auto !important;
+    min-height: 550px;
+    max-height: 555px;
+    overflow-y: auto;
+    background-color: #e0f2f1;
+}
+
+.bm .bm-menu .panel-collapse ul .select-li-bgc {background-color: #B2DFDB;}
+.bm .bm-menu .list-group-item {padding:10px 10px;}
+.bm .bm-menu .panel-collapse ul li {background-color: #e0f2f1;}
+.bm .bm-menu .panel>.list-group:last-child .list-group-item:last-child,
+.bm .bm-menu .panel>.panel-collapse>.list-group:last-child .list-group-item:last-child{
+    border-radius:0;
+}
+.bm .bm-menu .panel>.panel-collapse>.list-group .list-group-item {border-width: 0;}
+.bm .bm-menu .panel-group {margin: 0px;}
+.bm .bm-menu .panel-group .panel {
+    border: 0px;
+    border-radius: 0;
+}
+.bm .bm-menu .badge-normal{ background-color: #009688;}
+.bm .bm-menu .badge-update{ background-color: #f30; cursor: pointer;}
+
+
+
+/* 菜单栏 end */
+
+
+/* 数据内容 start */
+
+.bm .bm-content {flex: 1; margin-left: 10px;}
+
+.bm .bm-content .handsontable .htCore thead  th > div {
+    background-color: #80cbc4;
+}
+.bm .bm-content .handsontable th, .handsontable td {
+    border: 1px solid #80CBC4;
+}
+.bm .bm-content .select-row-color{background-color: #e0f2f1;}
+.bm .bm-content .info {
+    font-size: 16px;
+    margin: 15px 0px;
+}
+.bm .bm-content .info .name{
+    display: inline-block;
+    width:70%;
+}
+
+.bm .bm-content .info .name .total {
+    font-size:14px;
+    color:#ccc;
+}
+
+.bm .bm-content .info .name .total > span {
+    font-weight: 900;
+    color:#fc7247;
+}
+
+.bm .bm-content .info .btn-list {
+    display: inline-block;
+    float:right;
+    font-size: 14px;
+}
+
+.bm .bm-content .info .btn-list .btn-contact-provider {
+    color:black;
+    padding:5px 10px;
+    border: 1px solid #4db6ac;
+    text-decoration:none;
+}
+
+.bm .bm-content .buy-link {color: #004d40;}
+
+/* 数据内容 end */
+.bm-dialog .modal-content {width: 660px;}
+.bm-dialog .modal-body {padding: 5px;}
+.bm-dialog .bm-table { margin: 0px; padding: 0px;}
+.bm-dialog .bm-table .bm-tbody {
+    display:block;
+    max-height:160px;
+    overflow-y:scroll;
+}
+
+.bm-dialog .bm-table .bm-thead, .bm-tbody > tr  {
+    display:table;
+    width: 100%;
+}
+
+.bm-dialog .bm-table .bm-thead { width: calc( 100% - 1em )}
+
+.margin-bottom-10 {margin-bottom: 10px;}
+
+.padding-left-right {padding: 0px 10px;}
+
+
+
+
+/* handssontable */
+
+
+.filterButton {
+  border: 1px solid #bbb;
+  color: #bbb;
+  background: #eee;
+  border-radius: 2px;
+  padding: 2px;
+  font-size: 9px;
+  float: right;
+  line-height: 9px;
+  margin: 3px 3px 0 0;
+}
+.filtered {
+  color: #BB1212;
+}
+.filterButton:hover {
+  border: 1px solid #777;
+  color: #777;
+  cursor: pointer;
+}
+.filterButton.pressed {
+  background-color: #999;
+}
+
+.filterCtrl {
+  position: absolute;
+  border: 1px solid #ccc;
+  margin-top: 18px;
+  box-shadow: 0 1px 3px -1px #323232;
+  background: white;
+  padding: 5px;
+  font-size: 10px;
+  display: none;
+  z-index: 10;
+}
+
+.filterCtrl button {
+  width: 60px;
+  height: 20px;
+  margin: 5px 10px;
+}
+
+.filterCtrl div {
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.filterCtrl ul {
+  padding: 0 0;
+}
+.filterCtrl li {
+  text-align: left;
+  list-style: none;
+  padding: 2px 20px;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+.filterCtrl li.active:before {
+  font-size: 12px;
+  content: "\2714";
+  margin-left: -15px;
+  margin-right: 3px;
+}
+.filterCtrl li:hover {  background: #eee;  }
+
+.filterCtrl input + input {
+    margin-top: 5px;
+}
+
+/* handssontable end */
+
+
+/* 覆盖 ui-autocomplete css start  */
+.bm-dialog .ui-autocomplete-input {width: 400px; display: inline-block;}
+
+body .ui-autocomplete {
+    z-index: 3000;
+    list-style-type:none;
+    padding: 0;
+}
+
+body .ui-autocomplete .ui-menu-item .ui-state-active{
+    color:black;
+    border: 1px solid #e0f2f1;
+    background-color: #e0f2f1;
+}
+/* 覆盖 ui-autocomplete css end  */
+
+
+

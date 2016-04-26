@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <link rel="stylesheet" href="../../libs/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../css/css.css" type="text/css" />
+    <link rel="stylesheet" href="../../libs/loading/loading.css" type="text/css"/>
+</head>
+<body class="sign-in">
+    <div class="login_page">
+        <div id="react_sign_in">
+            <div class="page-header">
+              <!--<h1 class="text-center">
+                    <img src="../../icon/banma_logo_b.png" alt="banma" />
+               </h1>-->
+               <h2 class="text-center">设置基本信息</h2>
+            </div>
+            <div class="pw">
+              <dl>
+                  <dt class="user_name">
+                      <label>姓名</label>
+                      <input  type="text" id="profile_text_nickname" />
+                  </dt>
+                  <dt class="company_name">
+                      <label>公司名称</label>
+                      <input  type="text" id="profile_text_company" />
+                  </dt>
+                  <dt>
+                      <label class="vt">经营范围</label>
+                      <textarea  type="text" id="profile_text_description" ></textarea>
+                  </dt>
+                  <dt class="btn_pw">
+                      <button class="offset1 btn save_pf_btn"  >保存个人资料 </button>
+                  </dt>
+              </dl>
+            </div>
+        </div>
+    </div>
+    <!-- loading -->
+    <div class="loading hide">
+      <div class="rotate"></div>
+    </div>
+
+    <script>
+        var $ = window.jQuery = require('../../libs/jQuery/jquery-1.11.3.min.js');
+        var Mustache = require('Mustache');
+        var electron = require('electron');
+        var ipc = electron.ipcRenderer;
+        var shell = electron.shell;
+        var _ = require('underscore');
+        var api = require('../../js/api.js');
+        var userData = ipc.sendSync('get user data');
+        var token = ipc.sendSync('get token');
+    </script>
+    <script src="../../libs/loading/loading.js" type="application/javascript"></script>
+    <script src="../../libs/notice/notie.js" type="application/javascript"></script>
+    <script src="../../js/account.js" type="application/javascript"></script>
+</body>
+</html>

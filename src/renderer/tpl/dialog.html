@@ -1,0 +1,398 @@
+<!-- pdf dialog start -->
+<div class="modal fade" id="resCodeDialog" tabindex="-1" role="dialog" aria-labelledby="resCodeDialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" id="d1" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">钢厂资源号</h4>
+      </div>
+      <div class="modal-body">
+        <div class="text-center hide guarantee">
+              <input name="guarantee" type="text" class="form-control" style="width: 400px; display: inline-block" placeholder="请输入要查询的钢厂资源号" />
+              <button class="btn btn-primary" style="display: inline-block;" id="guaranteeSearchBtn">搜索</button>
+        </div>
+        <table class="table bm-table">
+          <thead class="bm-thead">
+          <tr>
+            <th width="20%">合同号</th>
+            <th width="35%">证书号</th>
+            <th width="15%">签发日期</th>
+            <th width="15%">交货日期</th>
+            <th width="15%">操作</th>
+          </tr>
+          </thead>
+          <tbody id="resCodeBody" class="bm-tbody">
+
+          </tbody>
+          <!-- body tr template -->
+          <script id="trTemplate" type="x-tmpl-mustache">
+            {{#data}}
+                <tr>
+                    <td width="20%">{{ order_num }}</td>
+                    <td width="35%">{{ wid }}</td>
+                    <td width="15%">{{ issuance_time }}</td>
+                    <td width="15%">{{ deliver_time }}</td>
+                    <td width="15%">
+                        <button type="button"
+                                class="btn btn-primary btn-sm downloadPDF"
+                                data-wid="{{ wid }}"
+                                data-order_num="{{ order_num }}"
+                                data-url="{{ download_pdf_url }}"
+                                data-body="{{ bodyFunc }}"
+                                >查看质保书
+                        </button>
+                    </td>
+                </tr>
+            {{/data}}
+          </script>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- pdf dialog end -->
+
+<!-- warehouse start -->
+<div class="modal fade bm-dialog" id="warehouseSearch" tabindex="-1" role="dialog" aria-labelledby="warehouseSearch">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button"  id="d2" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">仓库查询</h4>
+      </div>
+      <div class="modal-body">
+          <div class="text-center warehouseBtn" id="warehouse_autocomplete_parent">
+              <input name="warehouse" type="text" id="warehouse_autocomplete" class="form-control" style="width: 400px; display: inline-block" placeholder="请输入要查询的仓库 名称 地址 或简称" />
+              <button class="btn btn-primary" style="display: inline-block;" id="warehouseSearchBtn" >搜索</button>
+          </div>
+          <table class="table bm-table">
+              <thead class="bm-thead">
+                  <tr>
+                    <th width="30%">名称</th>
+                    <th width="40%">地址</th>
+                    <th width="30%">联系方式</th>
+                  </tr>
+              </thead>
+              <tbody id="warehouse" class="bm-tbody">
+              </tbody>
+              <!-- warehouse body tr template -->
+              <script id="warehouseTrTemplate" type="x-tmpl-mustache">
+                        {{#data}}
+                            <tr>
+                                <td width="30%">{{ name }}</td>
+                                <td width="40%">{{ address }}</td>
+                                <td width="30%">{{ contact }}</td>
+                            </tr>
+                        {{/data}}
+              </script>
+          </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- warehouse end-->
+
+
+<!-- real provider start -->
+<div class="modal fade bm-dialog" id="realProviderSearch" tabindex="-1" role="dialog" aria-labelledby="providerSearch">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" id="d3" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">货主查询</h4>
+      </div>
+      <div class="modal-body">
+          <form class="form-horizontal">
+              <div class="form-group margin-bottom-10">
+                <label for="spProduct" class="col-sm-2 control-label">品种</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="spProduct" placeholder="品种(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="spShopSign" class="col-sm-2 control-label">牌号</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="spShopSign" placeholder="牌号(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="spSpec" class="col-sm-2 control-label">规格</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="spSpec" placeholder="规格(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="spManufacturer" class="col-sm-2 control-label">钢厂</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="spManufacturer" placeholder="钢厂(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="spWeight" class="col-sm-2 control-label">重量</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="spWeight" placeholder="重量(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="spWarehouse" class="col-sm-2 control-label">仓库</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="spWarehouse" placeholder="仓库(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="spPackCode" class="col-sm-2 control-label">捆包号</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="spPackCode" placeholder="捆包号(可选)" >
+                </div>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <div class="form-group margin-bottom-10">
+          <label for="realityProvider" class="col-sm-2 control-label" style="color: red; line-height: 34px;">真实货主</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="realityProvider" readonly="readonly"
+                     style="display: inline-block; line-height: 34px;width: 340px" placeholder="真实货主">
+                <button class="btn btn-primary" id="realProviderSearchBtn">查真实货主</button>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--real provider end-->
+
+
+<!-- 验灯 start -->
+<div class="modal fade bm-dialog" id="statusSearch" tabindex="-1" role="dialog" aria-labelledby="statusSearch">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" id="d4" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">验灯查询</h4>
+      </div>
+      <div class="modal-body">
+          <form class="form-horizontal">
+              <div class="form-group margin-bottom-10">
+                <label for="cgProduct" class="col-sm-2 control-label">品种</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cgProduct" placeholder="品种(必填)">
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="cgShopSign" class="col-sm-2 control-label">牌号</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cgShopSign" placeholder="牌号(必填)">
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="cgSpec" class="col-sm-2 control-label">规格</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cgSpec" placeholder="规格(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="cgManufacturer" class="col-sm-2 control-label">钢厂</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cgManufacturer" placeholder="钢厂(必填)">
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="cgWeight" class="col-sm-2 control-label">重量</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cgWeight" placeholder="重量(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="cgWarehouse" class="col-sm-2 control-label">仓库</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cgWarehouse" placeholder="仓库(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="cgProviderName" class="col-sm-2 control-label">货主名称</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cgProviderName" placeholder="货主名称(必填)" >
+                </div>
+              </div>
+              <div class="form-group margin-bottom-10">
+                <label for="cgPackCode" class="col-sm-2 control-label">捆包号</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cgPackCode" placeholder="捆包号(可选,填了可提高验证查询的准确性 )" >
+                </div>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <div class="form-group margin-bottom-10">
+          <label for="cgResStatus" class="col-sm-2 control-label" style="color: red; line-height: 34px;">验货结果</label>
+            <div class="col-sm-10" style="text-align: left;">
+                <span id="cgResStatus"></span> &nbsp;
+                <button class="btn btn-primary" id="statusSearchBtn">查询灯的结果</button>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 验灯 end-->
+
+
+<!-- 供应商 start-->
+<div class="modal fade bm-dialog" id="providerNameSearch" tabindex="-1" role="dialog" aria-labelledby="providerNameSearch">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" id="d5" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">供应商查询</h4>
+      </div>
+      <div class="modal-body">
+          <div class="text-center providerNameBtn ">
+              <input id="pnProviderName" type="text" class="form-control" placeholder="请输入要查询的供应商 名称 地址 或简称" />
+              <button class="btn btn-primary" style="display: inline-block;" id="providerSearchBtn" >搜索</button>
+          </div>
+          <table class="table bm-table">
+              <thead class="bm-thead">
+                  <tr>
+                    <th width="35%">名称</th>
+                    <th width="35%">地址</th>
+                    <th width="30%">联系方式</th>
+                  </tr>
+              </thead>
+              <tbody id="providerNameBody" class="bm-tbody">
+              </tbody>
+              <!-- warehouse body tr template -->
+              <script id="providerNameTrTemplate" type="x-tmpl-mustache">
+                        {{#data}}
+                            <tr>
+                                <td width="35%">{{ name }}</td>
+                                <td width="35%">{{ address }}</td>
+                                <td width="30%">{{ contact }}</td>
+                            </tr>
+                        {{/data}}
+              </script>
+          </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 供应商 end -->
+
+
+<!-- 牌号 start-->
+<div class="modal fade bm-dialog" id="trademarkSearch" tabindex="-1" role="dialog" aria-labelledby="trademarkSearch">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">牌号查询</h4>
+      </div>
+      <div class="modal-body">
+          <div class="text-center trademarkBtn">
+              <input id="tdName" type="text" class="form-control" style="width: 400px; display: inline-block" placeholder="请输入要查询的牌号名" />
+              <button class="btn btn-primary" style="display: inline-block;" id="trademarkSearchBtn" >搜索</button>
+          </div>
+          <table class="table bm-table">
+              <thead class="bm-thead">
+                  <tr>
+                    <th width="15%">牌号名</th>
+                    <th width="15%">标准名</th>
+                    <th width="35%">力学性能</th>
+                    <th width="35%">化学性能</th>
+                  </tr>
+              </thead>
+              <tbody id="trademarkBody" class="bm-tbody">
+              </tbody>
+              <!-- 牌号 body tr template -->
+              <script id="trademarkTrTemplate" type="x-tmpl-mustache">
+                        {{#data}}
+                            <tr>
+                                <td width="15%" >{{ name }}</td>
+                                <td width="15%" >{{ standard }}</td>
+                                <td width="35%" >
+                                    {{#mechanical}}
+                                        {{ name }}:<br/>
+                                        {{#value}}
+                                            {{#value}}
+                                                {{ name }}:{{ value }}<br/>
+                                            {{/value}}
+                                        {{/value}}
+                                    {{/mechanical}}
+                                </td>
+                                <td width="35%" >
+                                    {{#chemical}}
+                                        {{ name }}:<br/>
+                                        {{#value}}
+                                            {{#value}}
+                                                {{ name }}:{{ value }}<br/>
+                                            {{/value}}
+                                        {{/value}}
+                                    {{/chemical}}
+                                </td>
+                            </tr>
+                        {{/data}}
+              </script>
+          </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 牌号 end -->
+
+<div style="width: 400px;" id="autocomplete_parent">
+</div>
+
+<script>
+    /**
+     * autocomplete
+     * arr [{'el': '#id or .class', 'source': '['aa','bb', ..] or url '  }]
+     */
+    $(function () {
+        function bm_autocomplete(arr){
+            for (var i=0;i<arr.length;i++){
+                var obj = arr[i];
+                if ( !_.isEmpty(obj) && !_.isEmpty(obj.el) && !_.isEmpty(obj.source) ){
+                    $(obj.el).autocomplete({
+                        source: obj.source || [],
+                        appendTo: obj.parent || null,
+                        minLength: 2,
+                        delay: 600,
+                        cacheLength:1,
+                        messages: {
+                            noResults: '',
+                            results: function() {}
+                        }
+                    });
+
+                }
+            }
+        }
+        bm_autocomplete([
+            {el:'#includedContent #pnProviderName', parent:'#autocomplete_parent', source: API_URL + 'api/search/provider/autocomplete/'},
+            {el:'#includedContent #warehouse_autocomplete', parent:'#autocomplete_parent', source: API_URL + 'api/search/warehouse/autocomplete/'}
+        ]);
+    });
+</script>
+
+
+

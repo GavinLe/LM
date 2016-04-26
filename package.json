@@ -1,0 +1,49 @@
+{
+  "name": "sougang",
+  "version": "1.0.0",
+  "description": "搜钢助手",
+  "main": "src/main/main.js",
+  "repository": "",
+  "author": {
+    "name": "sougang.me",
+    "email": "sougang@sougang.me",
+    "url": "http://sougang.me"
+  },
+  "scripts": {
+    "build": "npm run package && npm run zip",
+    "compile": "rm -rf app && gulp compile",
+    "package": "cross-env NODE_ENV=production npm run compile && node script/package.js",
+    "release": "npm run build && npm run upload",
+    "setup": "gulp bower && gulp compile-fonts",
+    "start": "cross-env NODE_ENV=development npm run compile && electron .",
+    "upload": "node script/upload.js",
+    "zip": "node script/zip.js",
+    "dev": "electron ./env/dev.js",
+    "test": "electron ./env/test.js",
+    "pro": "electron ./env/prod.js",
+    "start": "npm install && electron ."
+  },
+  "keywords": [
+    "sougang"
+  ],
+  "author": "sougang.me",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "mustache": "*",
+    "request": "^2.67.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "del": "^2.2.0",
+    "electron-prebuilt": "^0.37.5",
+    "gulp": "^3.9.1",
+    "gulp-copy": "0.0.2",
+    "gulp-debug": "^2.1.2",
+    "gulp-electron": "0.0.17",
+    "gulp-replace": "^0.5.4",
+    "gulp-uglify": "^1.5.3",
+    "mustache": "*",
+    "yargs": "^4.6.0",
+    "shelljs": "^0.6.0",
+  }
+}
