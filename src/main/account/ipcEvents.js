@@ -4,9 +4,9 @@
 
 'use strict';
 var path = require('path');
-var tk = require('../token.js');
 var ipc = require('electron').ipcMain;
-var windows = require('../window.js');
+var tk = require('../utils/token.js');
+var windows = require('../utils/window.js');
 
 module.exports.init = function (settings) {
   ipc.on('get token', function(event) {

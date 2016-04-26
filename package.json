@@ -18,14 +18,12 @@
     "start": "cross-env NODE_ENV=development npm run compile && electron .",
     "upload": "node script/upload.js",
     "zip": "node script/zip.js",
-    "dev": "electron ./env/dev.js",
-    "test": "electron ./env/test.js",
-    "pro": "electron ./env/prod.js",
+    "dev": "npm install && electron src/main/main.js -p=dev",
+    "test": "npm install && electron src/main/main.js -p=test",
+    "prod": "npm install && electron src/main/main.js -p=prod",
     "start": "npm install && electron ."
   },
-  "keywords": [
-    "sougang"
-  ],
+  "keywords": ["sougang"],
   "author": "sougang.me",
   "license": "CC0-1.0",
   "dependencies": {
@@ -35,7 +33,7 @@
   },
   "devDependencies": {
     "del": "^2.2.0",
-    "electron-prebuilt": "^0.37.5",
+    "electron-prebuilt": "0.37.5",
     "gulp": "^3.9.1",
     "gulp-copy": "0.0.2",
     "gulp-debug": "^2.1.2",
@@ -43,7 +41,6 @@
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^1.5.3",
     "mustache": "*",
-    "yargs": "^4.6.0",
-    "shelljs": "^0.6.0",
+    "yargs": "^4.6.0"
   }
 }

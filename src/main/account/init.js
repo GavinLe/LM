@@ -2,8 +2,6 @@
  * Created by gavin on 16/4/12.
  */
 'use strict';
-
-
 var account = require('./account.js');
 var ipcEvents = require('./ipcEvents.js');
 

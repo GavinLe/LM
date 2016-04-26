@@ -3,15 +3,11 @@
  */
 
 'use strict';
-
-var build = require('./build.js');
 var path = require('path');
 var fs = require('fs');
 var child_process = require('child_process');
-
-build.load();
-build.report();
-
+var electron = require('electron');
+var app = electron.app;
 
 var currentUser = '';
 
@@ -23,11 +19,9 @@ module.exports.setUser = setUser;
 
 function readJSON(p) {
   var filepath = path.join(getUserRoot(), p);
-
   if (!fs.existsSync(filepath)) {
     return {};
   }
-
   return JSON.parse(fs.readFileSync(filepath));
 }
 module.exports.readJSON = readJSON;
@@ -57,7 +51,6 @@ function open(p) {
 }
 module.exports.open = open;
 
-
 function getPath(p) {
   var filepath = path.join(getUserRoot(), p, 'txt.txt');
   var userPath = path.dirname(filepath);
@@ -65,27 +58,16 @@ function getPath(p) {
   return userPath;
 }
 module.exports.getPath = getPath
-  /////////////////////////////////////////////
 
 function getUserRoot() {
-  var rootPath;
-  if (process.platform == 'darwin') {
-    rootPath = path.resolve(build.data.userRoot);
-  } else {
-    // TODO：对于windows读取注册表
-    rootPath = 'C:\\Banma';
-  }
-
+  var rootPath = path.resolve(path.join(app.getPath('userData')));
   return path.join(rootPath, currentUser);
 }
 
-
 function ensurePath(p) {
-
   if (fs.existsSync(p)) {
     return;
   }
-
   ensurePath(path.dirname(p));
   fs.mkdirSync(p);
 }
