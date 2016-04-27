@@ -1,3 +1,18 @@
+## 项目结构说明
+ |-- fe.cli  
+ |---- resources 项目所需的资源  
+ |---- script 打包上传的脚步(暂时没用到)  
+ |---- src      
+ |------ main  事件处理 (electron main 事件监听和处理)  
+ |------ renderder 交互 (electron renderer 页面显示)   
+ |---- test  
+ |-- gulpfile.js gulp 文件 对项目的压缩、打包。  
+ |-- package.json 主程序入口   
+
+ 程序运行时临时文件、以及退出时保存的token会存放的地址根据运行环境所决定。 如下:  
+  OS X: /Users/XXXX/Library/Application Support/Electron   
+  Window: C:\Users\XXXX\AppData\Roaming\Electron
+
 
 ## 客户端 - 基于 electron
 - cd cli/cli/
@@ -5,11 +20,6 @@
 - 运行 npm run test 启动测试环境
 - 运行 npm run prod 启动生产环境
 
-## env - 环境
-- common.js 是公共的配置.
-- dev.js是开发环境的配置.
-- prod.js 是生产配置.
-- test.js是测试环境配置.
 
 ## main - electron 主进程所跑的东西
 - account 是用户模块
