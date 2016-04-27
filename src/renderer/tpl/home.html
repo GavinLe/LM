@@ -118,6 +118,7 @@
     window.ipc = electron.ipcRenderer;
     window.shell = electron.shell;
     window._ = require('underscore');
+    console.log('fuck');
     var userData = ipc.sendSync('get user data');
     var userInfo = ipc.sendSync('get user info');
     var api = require('../js/api.js');
@@ -139,13 +140,11 @@
 <script src="../js/toolsSearch.js" type="application/javascript"></script>
 <script src="../js/homeController.js" type="application/javascript"></script>
 
-
 <script>
 log_service.trackPageView('home');
 $(document).ready(function() {
   // 加载 dialog 模板
   $("#includedContent").load("./dialog.html");
-
   // log_service.setUserId
   log_service.setUserId(userInfo.phone)
 });

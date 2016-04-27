@@ -37,6 +37,7 @@ module.exports.init = function (settings) {
             if (code == 0) {
                 console.log('token正常:', result.data.phone);
                 storage.setUser(result.data.phone);
+                storage.setUserInfo(Object.assign({},result.data, {token: settings.token}));
                 console.log('auth level:', result.data.auth_level);
                 setAuthLevel(result.data.auth_level);
             } else {

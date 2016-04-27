@@ -10,6 +10,7 @@ var electron = require('electron');
 var app = electron.app;
 
 var currentUser = '';
+var currentUserInfo = null;
 
 function setUser(phone) {
   currentUser = phone;
@@ -71,3 +72,14 @@ function ensurePath(p) {
   ensurePath(path.dirname(p));
   fs.mkdirSync(p);
 }
+
+function setUserInfo(userInfo){
+    currentUserInfo =  userInfo;
+}
+module.exports.setUserInfo = setUserInfo;
+
+
+function getUserInfo(){
+    return getUserInfo = currentUserInfo;
+}
+module.exports.getUserInfo = getUserInfo;
