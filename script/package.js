@@ -11,15 +11,17 @@ const devDeps = Object.keys(pkg.devDependencies);
 
 const DEFAULT_OPTS = {
   dir:   './',
-  name:  'sougangzhushou',
+  name:  pkg.name,
   asar:  true,
   prune: true,
-  out:   `packages/v${pkg.version}`,
+  out:   `build/v${pkg.version}`,
   'app-version': pkg.version,
   ignore: [
     '.DS_Store',
+    '.git',
     '/packages($|/)',
     '/script($|/)',
+    '/test($|/)',
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`)),
 }
 
@@ -31,9 +33,7 @@ const pack = (platform, arch, callback) => {
   });
 }
 
-exec('rm -rf packages');
+exec('rm -rf build');
 pack('darwin', 'x64');
-pack('linux',  'ia32');
-pack('linux',  'x64');
 pack('win32',  'ia32');
 pack('win32',  'x64');

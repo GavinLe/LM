@@ -2,7 +2,7 @@
   "name": "sougang",
   "version": "1.0.0",
   "description": "搜钢助手",
-  "main": "src/main/main.js",
+  "main": "src/main/main.js -p=prod",
   "repository": "",
   "author": {
     "name": "sougang.me",
@@ -11,11 +11,8 @@
   },
   "scripts": {
     "build": "npm run package && npm run zip",
-    "compile": "rm -rf app && gulp compile",
-    "package": "cross-env NODE_ENV=production npm run compile && node script/package.js",
+    "package": "node script/package.js",
     "release": "npm run build && npm run upload",
-    "setup": "gulp bower && gulp compile-fonts",
-    "start": "cross-env NODE_ENV=development npm run compile && electron .",
     "upload": "node script/upload.js",
     "zip": "node script/zip.js",
     "dev": "npm install && electron src/main/main.js -p=dev",
@@ -42,6 +39,8 @@
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^1.5.3",
     "mustache": "*",
-    "yargs": "^4.6.0"
+    "yargs": "^4.6.0",
+    "shelljs": "^0.6.0",
+    "electron-packager": "^5.2.0"
   }
 }

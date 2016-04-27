@@ -18,8 +18,11 @@ else if (argv.p == 'test') {
 else if (argv.p == 'dev') {
     env = 'DEV';
 }
-else 
+else{
     console.log('unknown arg p, should be prod/test/dev, set to prod default.');
+}
+// build target dir
+const BUILD_TARGET = './build/'+ packageJson.name + '/';
 
 console.log('build with env = ', env);
 
@@ -27,46 +30,40 @@ console.log('build with env = ', env);
 gulp.task('copy-npm', function () {
     return gulp.src(['node_modules/**/*', '!node_modules/electron-prebuilt/**/*'])
         // .pipe(debug())
-        .pipe(gulp.dest('./build/src/node_modules/'));
-});
-
-gulp.task('copy-main', function() {
-   gulp.src('main.js', {"base": "."})
-       .pipe(replace(/global.ENV[ =]*\S*;/gi, "global.ENV = '" + env + "';"))
-       .pipe(gulp.dest('./build/src/'))
+        .pipe(gulp.dest(BUILD_TARGET + 'node_modules/'));
 });
 
 gulp.task('copy-js', function () {
-    return gulp.src(['public/js/**/*.js', 'public/utils/**/*.js', 'main/**/*.js'], { "base" : "." })
+    return gulp.src(['src/renderer/js/**/*.js', 'src/main/**/*.js'], { "base" : "." })
         .pipe(uglify())
-        .pipe(gulp.dest('./build/src/'));
+        .pipe(gulp.dest(BUILD_TARGET));
 });
 
 gulp.task('copy-all', function () {
-    return gulp.src(['public/css/**/*', 'public/icon/**/*', 'public/libs/**/*', 'public/tpl/**/*', 'env/**/*.json', 'data/dump', 'package.json'], { "base" : "." })
-        .pipe(gulp.dest('./build/src/'));
+    return gulp.src(['resource/**/*','src/main/**/*','src/renderer/css/**/*', 'src/renderer/icon/**/*', 'src/renderer/libs/**/*', 'src/renderer/tpl/**/*', 'package.json'], { "base" : "." })
+        .pipe(gulp.dest(BUILD_TARGET));
 });
 
 gulp.task('clean', function() {
-    del.sync(['build/src/**']);
-    del.sync(['build/release/' + packageJson.version + '/**']);
+    del.sync(['build/'+ packageJson.name +'/**']);
+    del.sync(['build/release/v' + packageJson.version + '/**']);
 });
 
-gulp.task('copy', ['clean', 'copy-main', 'copy-js', 'copy-all', 'copy-npm'], function () {
+gulp.task('copy', ['clean', 'copy-js', 'copy-all', 'copy-npm'], function () {
 });
 
 gulp.task('build', ['copy'], function() {
 
     gulp.src("")
     .pipe(electron({
-        src: './build/src',
+        src: './build/' + packageJson.name,
         packageJson: packageJson,
-        release: './build/release/' + packageJson.version,
+        release: './build/release/v' + packageJson.version,
         cache: './build/cache',
         version: 'v0.37.5',
         packaging: true,
         // token: undefined,
-        platforms: ['win32-ia32', 'darwin-x64'],
+        platforms: ['win32-ia32','win32-x64', 'darwin-x64'],
         platformResources: {
             darwin: {
                 CFBundleDisplayName: packageJson.name,
@@ -85,3 +82,5 @@ gulp.task('build', ['copy'], function() {
     }))
     .pipe(gulp.dest(""));
 });
+
+gulp.task('default', ['build'] , function () {});

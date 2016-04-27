@@ -20,3 +20,4 @@ celerybeat-*
 conn*.sh
 docker/etc/data/*
 test_db/*
+build/

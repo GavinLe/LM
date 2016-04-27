@@ -18,9 +18,6 @@
 - strong.js 本地数据持久化
 - events.js 事件处理
 
-## public - electron 子进程所跑的东西(也就是看到页面效果)
-就是常规的web开发的目录结构
-
 ## main.js - electron 启动文件
 package.js - 包含各种所需模块以及项目的配置信息(名称、版本、许可证等)。 包含可配置项 name 名称 应用描述 description 版本号
 
@@ -35,3 +32,7 @@ gulp copy
 
 gulp build -p=prod (test/dev)
 electron打包,会先调用copy,文件在build/release下, 第一次会下载electron包,比较慢
+
+## 命令
+npm run build - 第一步先打包 window: win-ia32  win-x64  OS X: darwin-x64 存放在本地build文件夹下
+npm run release - 打包、zip 、更新到静态服务器 功能待完善
