@@ -25,14 +25,12 @@ package.js - 包含各种所需模块以及项目的配置信息(名称、版本
 
 
 ## gulp 使用方法
+npm install gulp -g 全局安装gulp
+
 npm install 安装gulp依赖库,配置在package.json中
 
 gulp copy
-删除临时文件并拷贝源码到 build/src目录下
+删除临时文件并拷贝源码到 build/sougang 目录下
 
 gulp build -p=prod (test/dev)
 electron打包,会先调用copy,文件在build/release下, 第一次会下载electron包,比较慢
-
-## 命令
-npm run build - 第一步先打包 window: win-ia32  win-x64  OS X: darwin-x64 存放在本地build文件夹下
-npm run release - 打包、zip 、更新到静态服务器 功能待完善
