@@ -11,7 +11,7 @@ var all = {};
 module.exports.all = all;
 
 var rootPath = path.resolve(path.join(__dirname, '../../renderer/tpl/'));
-var windowOptions = {width: 900, height:600};
+var windowOptions = {width: 900, height: 600, show: false};
 
 module.exports.open = function (name, html, app, optinon) {
   optinon =  Object.assign(windowOptions, optinon);
@@ -48,7 +48,23 @@ module.exports.open = function (name, html, app, optinon) {
 
 
 module.exports.close = function (name) {
-  if (all[name]) {
-    all[name].hide();
-  }
+    if (all[name]) {
+        console.log("close window:", name);
+        all[name].close();
+    }
+};
+
+module.exports.hide = function (name) {
+    if (all[name]) {
+        console.log("hide window:", name);
+        all[name].hide();
+    }
+};
+
+module.exports.destroy = function (name) {
+    if (all[name]) {
+        console.log("destroy window:", name);
+        all[name].destroy();
+        delete all[name]
+    }
 };

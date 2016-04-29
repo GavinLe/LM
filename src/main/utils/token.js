@@ -22,14 +22,20 @@ module.exports.init = function (settings) {
     module.exports.setAuthLevel = setAuthLevel;
 
     var checkToken = function () {
+        console.log('this is checkToken:'+ settings.token);
         if (!settings.token) {
             setAuthLevel(3);
             return;
         }
         var server = build.loadConfig().server.api;
         var url = server + 'api/check/token/?token=' + settings.token;
+        console.log("checkToken:" + url);
         request.get(url, function(error, response, body) {
-            if (error) return console.log(error.stack);
+            if (response.statusCode!=200){
+                console.log("check token error:", response.statusCode, response.statusMessage);
+                events.emit('check token error', response.statusMessage);
+                return;
+            }
             console.log("===== check result =====");
             console.log(body);
             var result = JSON.parse(body);
@@ -51,5 +57,4 @@ module.exports.init = function (settings) {
             checkToken();
         }
     }
-
 };

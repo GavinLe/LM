@@ -14,7 +14,7 @@ module.exports.init = function (settings) {
         if (newAuthLevel == 0) {
             windows.open('home', 'home.html', true, { width: 1100, height: 600 });
             //windows.open('test', 'test.html', true, { width: 1100, height: 600 });
-            windows.close('account');
+            windows.destroy('account');
         } else if (newAuthLevel == 1) {
             windows.open('account', 'set_password.html');
         } else if (newAuthLevel == 2) {

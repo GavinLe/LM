@@ -6,6 +6,7 @@ var del = require('del');
 var uglify = require('gulp-uglify');
 var debug = require('gulp-debug');
 var replace = require('gulp-replace');
+var obfuscate = require('gulp-obfuscate');
 var argv = require('yargs').argv;
 
 var env = 'PROD';
@@ -35,12 +36,12 @@ gulp.task('copy-npm', function () {
 
 gulp.task('copy-js', function () {
     return gulp.src(['src/renderer/js/**/*.js', 'src/main/**/*.js'], { "base" : "." })
-        .pipe(uglify())
+        .pipe(uglify())  // 压缩
+        .pipe(obfuscate()) // 混淆
         .pipe(gulp.dest(BUILD_TARGET));
 });
-
 gulp.task('copy-all', function () {
-    return gulp.src(['resource/**/*','src/main/**/*','src/renderer/css/**/*', 'src/renderer/icon/**/*', 'src/renderer/libs/**/*', 'src/renderer/tpl/**/*', 'package.json'], { "base" : "." })
+    return gulp.src(['resources/*','src/main/**/*','src/renderer/css/**/*', 'src/renderer/icon/**/*', 'src/renderer/libs/**/*', 'src/renderer/tpl/**/*', 'package.json'], { "base" : "." })
         .pipe(gulp.dest(BUILD_TARGET));
 });
 
@@ -61,13 +62,14 @@ gulp.task('build', ['copy'], function() {
         release: './build/release/v' + packageJson.version,
         cache: './build/cache',
         version: 'v0.37.5',
-        packaging: true,
+        asar: true,
+        //packaging: true,
         // token: undefined,
         platforms: ['win32-ia32','win32-x64', 'darwin-x64'],
         platformResources: {
             darwin: {
-                CFBundleDisplayName: packageJson.name,
-                CFBundleIdentifier: packageJson.name,
+                CFBundleDisplayName: packageJson.displayName,
+                CFBundleIdentifier: packageJson.name + packageJson.version,
                 CFBundleName: packageJson.name,
                 CFBundleVersion: packageJson.version,
                 // icon: 'gulp-electron.ico'

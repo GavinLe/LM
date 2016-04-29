@@ -8,11 +8,13 @@ var path = require('path');
 var electron = require('electron');
 var app = electron.app;
 var CONFIG_FILE = path.join(app.getPath('userData'), 'settings.json');
+console.log('settings 保存的位置', CONFIG_FILE);
 var buffer = {};
 module.exports.loadConfig = function () {
     if (fs.existsSync(CONFIG_FILE)) {
         buffer = JSON.parse(fs.readFileSync(CONFIG_FILE).toString());
     }
+
     return buffer;
 };
 

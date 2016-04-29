@@ -10,16 +10,14 @@
  |-- package.json 主程序入口   
 
  程序运行时临时文件、以及退出时保存的token会存放的地址根据运行环境所决定。 如下:  
-  OS X: /Users/XXXX/Library/Application Support/Electron   
-  Window: C:\Users\XXXX\AppData\Roaming\Electron
-
+  OS X: /Users/gavin/Library/Application Support/Electron   
+  Window: C:\Users\gavin\AppData\Roaming\Electron
 
 ## 客户端 - 基于 electron
 - cd cli/cli/
 - 运行 npm run dev 启动开发环境
 - 运行 npm run test 启动测试环境
 - 运行 npm run prod 启动生产环境
-
 
 ## main - electron 主进程所跑的东西
 - account 是用户模块

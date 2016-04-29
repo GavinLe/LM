@@ -21,9 +21,11 @@ module.exports.init = function (settings) {
   });
 
   ipc.on('sign in', function(event, token) {
+    //tk.setToken(token);
     console.log('====ipc: sign in =====');
     console.log(token);
     console.log('>>>>>>>>>>>>>>>>>>>>>>>');
+    console.log(settings);
     settings.token = token;
     tk.checkToken();
   });

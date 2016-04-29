@@ -22,16 +22,25 @@ mainEvents.init();
 
 // 读取用户设置
 var settings = require('./utils/settings.js');
+<<<<<<< HEAD
+var settingConfig = settings.loadConfig();
+=======
+settings.save();
+>>>>>>> 01b1f635df588792705899be08acf11aef9c4bc1
 
 var token = require('./utils/token.js');
-token.init(settings.loadConfig());
+token.init(settingConfig);
 
 // 加载 account
 var account = require('./account/init.js');
-account.init(settings.loadConfig());
+account.init(settingConfig);
 
 // 加载 resource list
 var resourceList = require('./resource-list/init.js');
-resourceList.init(settings.loadConfig());
+resourceList.init(settingConfig);
+
+events.on('check token error', function(){
+    app.quit();
+});
 
 console.log("start electron api ENV:", global.ENV);
