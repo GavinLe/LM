@@ -31,6 +31,7 @@
     }
 
     function realProviderSearch(params){
+        log_service.trackEvent('真实货主查询', 'click_query');
         var url = API_URL + 'api/search/real/provider/';
         loading.showLoading();
         $.post(url, params)
@@ -38,7 +39,6 @@
                 loading.hideLoading();
                 if (result.code == 0) {
                     if (result.data){
-
                         // 解析模板
                         $('.realProviderSearchParams').addClass('hide');
                         $('#realityProvider').val(result.data.provider_name);
@@ -59,6 +59,7 @@
 
     function warehouseSearch (name, isShowBtn){
         name = specialCharactersHandle(name, ' ');
+        log_service.trackEvent('仓库查询', 'click_query', {'query_key': name});
         var url = API_URL + 'api/search/warehouse/';
         loading.showLoading();
         $.post(url, {search_name: name})
@@ -91,6 +92,7 @@
 
     function trademarkSearch(key, isShowBtn){
         key = specialCharactersHandle(key, ' ');
+        log_service.trackEvent('牌号查询', 'click_query', {'query_key': key});
         var url = API_URL + 'api/search/trademark/';
         loading.showLoading();
         var params = {search_name: key.toUpperCase()};
@@ -125,6 +127,7 @@
 
     function providerSearch(name, isShowBtn){
         name = specialCharactersHandle(name, ' ');
+        log_service.trackEvent('供应商查询', 'click_query', {'query_key': name});
         var url = API_URL + 'api/search/provider/';
         loading.showLoading();
         var params = {search_name: name};
@@ -218,6 +221,7 @@
                 notie.alert(3,'未知错误');
             });
     }
+
 
     window.tools = {
         trademarkSearch:trademarkSearch,

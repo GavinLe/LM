@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../libs/bootstrap/3.3.6/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../css/css.css" type="text/css" />
     <link rel="stylesheet" href="../../libs/loading/loading.css" type="text/css"/>
+
 </head>
 <body class="sign-in">
     <div class="login_page">
@@ -32,7 +33,7 @@
                     </div>
                 </div>
                 <div>
-                    <div>切换到&nbsp;<a id="passwordToSMS">短信验证码登录</a></div>
+                    <div>切换到&nbsp;<a id="passwordToSMS">新用户注册</a></div>
                     <div class="new_user"><span class="red_font">新用户</span>
                     <span>可以使用短信验证码直接登录</span></div>
                 </div>
@@ -81,10 +82,11 @@
         var shell = electron.shell;
         var _ = require('underscore');
         var api = require('../../js/api.js');
-        var userData = ipc.sendSync('get user data');
+        window.remote  = electron.remote;
+        var userData = remote.app.getPath('userData');;
     </script>
     <script src="../../libs/loading/loading.js" type="application/javascript"></script>
     <script src="../../libs/notice/notie.js" type="application/javascript"></script>
-    <script src="../../js/account.js" type="application/javascript"></script>
+    <script src="../../js/account/account.js" type="application/javascript"></script>
 </body>
 </html>

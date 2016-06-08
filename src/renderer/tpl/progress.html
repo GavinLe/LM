@@ -1,0 +1,26 @@
+</<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>更新进度</title>
+	<link rel="stylesheet" href="../libs/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../libs/jquery-ui-1.12.0/jquery-ui.theme.min.css" />
+    <link rel="stylesheet" href="../css/css.css" type="text/css" />
+</head>
+<body>
+<div class="progress">
+  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;margin-bottom: 5px">
+    0%
+  <div>
+</div>
+
+<script>
+    window.$ = window.jQuery = require('../libs/jQuery/jquery-1.11.3.min.js');
+    window.ipc = require('electron').ipcRenderer;
+</script>
+
+<script src="../libs/jquery-ui-1.12.0/jquery-ui.js" ></script>
+<script src="../libs/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="../js/update.js" type="application/javascript"></script>
+</body>
+</html>

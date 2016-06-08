@@ -1,7 +1,10 @@
 ## 项目结构说明
- |-- fe.cli  
- |---- resources 项目所需的资源  
- |---- script 打包上传的脚步(暂时没用到)  
+ |-- fe.client  
+ |---- resources 项目所需的资源    
+ |---- script 打包上传的脚步
+ |------- cache 缓存文件   
+ |------- sgze 客户端源文件   
+ |------- upload 用于自动跟新的客户端源文件  
  |---- src      
  |------ main  事件处理 (electron main 事件监听和处理)  
  |------ renderder 交互 (electron renderer 页面显示)   
@@ -38,7 +41,16 @@ npm install gulp -g 全局安装gulp
 npm install 安装gulp依赖库,配置在package.json中
 
 gulp copy
-删除临时文件并拷贝源码到 build/sougang 目录下
+删除临时文件并拷贝源码到 build/{package.name} 目录下  
 
-gulp build -p=prod (test/dev)
-electron打包,会先调用copy,文件在build/release下, 第一次会下载electron包,比较慢
+electron打包,会先调用copy,文件在build/release下, 第一次会下载electron包,比较慢   
+
+1. gulp build --env prod (test/dev) 或者 gulp --env prod (test/ dev)  
+
+## script 使用
+npm run upload 压缩最新版本的客户端文件、不包括 exe 相关的信息  
+
+## package 使用   
+sh package/package.sh  打包命令  
+根据提示输入对应的数字
+end

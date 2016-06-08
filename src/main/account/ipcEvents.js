@@ -7,6 +7,7 @@ var path = require('path');
 var ipc = require('electron').ipcMain;
 var tk = require('../utils/token.js');
 var windows = require('../utils/window.js');
+var events = require('../utils/events.js').events;
 
 module.exports.init = function (settings) {
   ipc.on('get token', function(event) {
@@ -15,30 +16,25 @@ module.exports.init = function (settings) {
 
 
   ipc.on('sign out', function(event) {
-    console.log('====ipc: sign out =====');
     delete settings.token;
-    tk.checkToken();
+    events.emit('sign out');
+    //tk.checkToken();
+
   });
 
   ipc.on('sign in', function(event, token) {
     //tk.setToken(token);
-    console.log('====ipc: sign in =====');
-    console.log(token);
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>');
-    console.log(settings);
     settings.token = token;
     tk.checkToken();
   });
 
 
   ipc.on('set password success', function(event) {
-    console.log('====ipc: set password success =====');
     tk.checkToken();
   });
 
 
   ipc.on('set profile success', function(event) {
-    console.log('====ipc: set profile success =====');
     tk.checkToken();
   });
 
@@ -49,5 +45,9 @@ module.exports.init = function (settings) {
 
   ipc.on('change password', function(event) {
     windows.open('settings', 'reset_password.html', 'account', 'children');
+  });
+
+  ipc.on('user settings', function(event){
+    windows.open('settings', 'account\/user_settings.html', true, {width: 800, height:550});
   });
 };

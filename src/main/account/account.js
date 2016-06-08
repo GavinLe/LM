@@ -26,7 +26,6 @@ module.exports.init = function (settings) {
 
 
     events.on('start', function () {
-        console.log("====== app start =====");
         tk.checkToken();
         // 15s一次的token检查
         setInterval(tk.heartBeat, 15 * 1000);

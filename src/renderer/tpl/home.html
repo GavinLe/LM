@@ -18,10 +18,14 @@
         <div class="col col-xs-10">
             <a class="btn btn-default bm-btn-title" role="button" id="showGuaranteeDialog">查质保书</a>
             <a class="btn btn-default bm-btn-title" role="button" id="showtrademarkDialog">查牌号</a>
-            <a class="btn btn-default bm-btn-title" role="button" id="showRealyProviderDialog">查真实货主</a>
-            <a class="btn btn-default bm-btn-title" role="button" id="showStatusDialog" >验灯</a>
+            <!-- <a class="btn btn-default bm-btn-title" role="button" id="showRealyProviderDialog">查真实货主</a>
+            <a class="btn btn-default bm-btn-title" role="button" id="showStatusDialog" >验灯</a> -->
             <a class="btn btn-default bm-btn-title" role="button" id="showWarehouseSearchDialog">仓库</a>
             <a class="btn btn-default bm-btn-title" role="button" id="showProviderSearchDialog" >供应商</a>
+            <div style="float:right;">
+                <a class="btn btn-default bm-btn-title is-admin hide" role="button" id="openUserSettings" >设置</a>
+                <a class="btn btn-default bm-btn-title" role="button" id="quitBtn" >安全退出</a>
+            </div>
         </div>
     </div>
     <div class="row sg-helper">
@@ -40,32 +44,35 @@
                         <ul class="list-group" id="oyResouces" >
                         </ul>
                     </div>
-                    <!-- zhaogang -->
-                    <div class="panel-heading text-center tree-head hide" >
+
+                    <!-- 贸易商资源单 -->
+                    <div class="panel-heading text-center tree-head" >
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#zhaogang">
-                                找钢网
+                            <a data-toggle="collapse" data-parent="#accordion" href="#provider">
+                                贸易商资源单
                             </a>
                         </h4>
                     </div>
-                    <div id="zhaogang" class="panel-collapse collapse hide">
-                        <ul class="list-group" id="zgResouces">
-                            <li class="list-group-item disabled">暂无数据</li>
+                    <div id="provider" class="panel-collapse collapse">
+                        <ul class="list-group" id="providerResource">
                         </ul>
                     </div>
-                    <!-- wdgangtie -->
-                    <div class="panel-heading text-center tree-head hide">
+
+                    <!-- 我的资源单 -->
+                    <div class="panel-heading text-center tree-head hide is-admin" >
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#wdgangtie">
-                                我的钢铁
+                            <a data-toggle="collapse" data-parent="#accordion" href="#my">
+                                我的资源单
                             </a>
                         </h4>
                     </div>
-                    <div id="wdgangtie" class="panel-collapse collapse hide">
-                        <ul class="list-group" id="wdResouces">
-                            <li class="list-group-item disabled" >暂无数据</li>
+                    <div id="my" class="panel-collapse collapse hide is-admin">
+                        <ul class="list-group" id="myResouces">
+                            <li id="showMyResource" class="list-group-item"><a href="javascript:void(0)">我的资源单</a></li>
+                            <!-- <li id="addMyResource" class="list-group-item"> <a>上传最新资源</a></li> -->
                         </ul>
                     </div>
+
                     <!-- 菜单栏 模板-->
                     <script id="resourcesLiTemplate" type="x-tmpl-mustache">
                         {{#data}}
@@ -78,6 +85,7 @@
                 </div>
 
             </div>
+            <div class="clearfix"></div>
         </div>
         <div class="bm-content">
             <div id="providerInfo" class="info"></div>
@@ -112,19 +120,27 @@
 <div id="includedContent" class="bm-dialog"></div>
 
 <script>
-    window.$ = window.jQuery = require('../libs/jQuery/jquery-1.11.3.min.js');
+    window.crossfilter = require('../libs/crossfilter/crossfilter.js');
+    window.dv = require('../libs/datavore/dv.js').dv;
+    window.XLSX = require('xlsx');
     window.Mustache = require('Mustache');
+    window.request = require('request');
+    window._ = require('underscore');
     var electron = require('electron');
     window.ipc = electron.ipcRenderer;
     window.shell = electron.shell;
-    window._ = require('underscore');
-    console.log('fuck');
-    var userData = ipc.sendSync('get user data');
+    window.remote  = electron.remote;
+    window.$ = window.jQuery = require('../libs/jQuery/jquery-1.11.3.min.js');
+    var userData = remote.app.getPath('userData');
     var userInfo = ipc.sendSync('get user info');
     var api = require('../js/api.js');
     var BM_CONFIG = api.readConfig();
     var API_URL = BM_CONFIG.server.api;
     console.log(userInfo);
+    // if (userInfo.role == 'ADMIN'){
+    //     $('#openUserSettings').removeClass('hide');
+    //
+    // }
 </script>
 
 <script src="../libs/jquery-ui-1.12.0/jquery-ui.js" ></script>
@@ -132,10 +148,12 @@
 <script src="../libs/loading/loading.js" type="application/javascript"></script>
 <script src="../libs/notice/notie.js" type="application/javascript"></script>
 <script src="../libs/handsontable/dist/handsontable.full.js"></script>
-<script src="../js/datasource.js"></script>
-<script src="../js/datastore.js"></script>
-<script src="../js/filterctrl.js"></script>
-<script src="../js/resourceTable.js"></script>
+
+<script src="../js/resource/datasource.js"></script>
+<script src="../js/resource/datastore.js"></script>
+<script src="../js/resource/filterctrl.js"></script>
+<script src="../js/resource/resourceTable.js"></script>
+<script src="../js/utils.js"></script>
 <script src="../libs/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="../js/toolsSearch.js" type="application/javascript"></script>
 <script src="../js/homeController.js" type="application/javascript"></script>

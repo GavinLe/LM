@@ -4,13 +4,13 @@
 
 /* Common css */
 /* css 文本过长自动截取 */
-
+body { font-size: 14px;}
 a {color: #78afd3;}
 a:link {  color: #78afd3;  text-decoration: none; }
 a:visited {  color: #78afd3;  text-decoration: none;  }
 a:hover {  color: #009688;  text-decoration: underline;  }
 a:active {  COLOR: #009688;  text-decoration: underline;  }
-
+.hidden { display: none !important;}
 .ellipsis{
     display: inline-block;
     max-width:120px;
@@ -23,9 +23,7 @@ a:active {  COLOR: #009688;  text-decoration: underline;  }
 .mw-80 {max-width: 79px;}
 .mw-160 {max-width: 159px;}
 
-.mb-5{
-    margin: 5px 0px 0px 0px;
-}
+.mb-5{margin: 5px 0px 0px 0px;}
 .bm-pointer {cursor: pointer; color: #78afd3;}
 .bm-pointer:link {  color: #78afd3;  text-decoration: none; }
 .bm-pointer:visited {  color: #78afd3;  text-decoration: none;  }
@@ -33,6 +31,11 @@ a:active {  COLOR: #009688;  text-decoration: underline;  }
 .bm-pointer:active {  COLOR: #009688;  text-decoration: underline;  }
 
 /*Common css end*/
+
+/* .modal-dialog start */
+.modal-dialog {margin-top: 160px;}
+
+/* .modal-dialog end */
 
 /* sign-in start */
 .sign-in .body {  display: flex;  flex-direction: column;  }
@@ -212,13 +215,13 @@ a:active {  COLOR: #009688;  text-decoration: underline;  }
 
 .sg-helper {
     margin: 0;
-    font-size: 10px;
+    font-size: 14px;
     display: flex;
 }
 
 /* 菜单栏 start */
 
-.bm .bm-menu {padding: 0; width: 150px;}
+.bm .bm-menu {padding: 0; width: 180px;}
 .bm .bm-menu .tree-head {
     background-color: #00897b;
     color: white;
@@ -229,6 +232,7 @@ a:active {  COLOR: #009688;  text-decoration: underline;  }
     height:auto !important;
     min-height: 550px;
     max-height: 555px;
+    min-width: 180px;
     overflow-y: auto;
     background-color: #e0f2f1;
 }
@@ -255,7 +259,7 @@ a:active {  COLOR: #009688;  text-decoration: underline;  }
 
 
 /* 数据内容 start */
-
+.bm .handsontable .bm-red{color: red;}
 .bm .bm-content {flex: 1; margin-left: 10px;}
 
 .bm .bm-content .handsontable .htCore thead  th > div {
@@ -356,7 +360,7 @@ a:active {  COLOR: #009688;  text-decoration: underline;  }
   box-shadow: 0 1px 3px -1px #323232;
   background: white;
   padding: 5px;
-  font-size: 10px;
+  font-size: 12px;
   display: none;
   z-index: 10;
 }
@@ -412,3 +416,46 @@ body .ui-autocomplete .ui-menu-item .ui-state-active{
     background-color: #e0f2f1;
 }
 /* 覆盖 ui-autocomplete css end  */
+
+
+
+/* 用户设置 start*/
+
+.user-settings { border: 1px solid #80cbc4;}
+.user-settings .title {
+    border-bottom: 1px solid rgb(77,182,172);
+    padding: 10px;
+    margin: 0px;
+    background-color: rgb(77,182,172);
+    color: #FFF
+}
+.user-settings .content {
+    padding:10px 20px;
+    min-height: 400px;
+}
+.user-settings .content .account > p,
+.user-settings .content .company-info > p,
+.user-settings .content .company-filter > p {
+    border-bottom: 1px solid #999; color: #999;
+}
+.user-settings .content .company-filter .filter-content {
+    padding: 0px 5px;
+}
+.user-settings .content .company-filter .filter-content .role {
+    border-radius: 8px;
+    height:80px;
+    border: 1px solid #cacaca;
+}
+.user-settings .content .company-filter .filter-content .filter-table {
+    margin-top: 20px;
+}
+.user-settings .content .company-filter .filter-content .filter-table table,
+.user-settings .content .company-filter .filter-content .filter-table table tr, .user-settings .content .company-filter .filter-content .filter-table table tr th,
+.user-settings .content .company-filter .filter-content .filter-table table tr td {
+    border-color: #999;
+}
+
+.user-settings .content .company-filter .filter-content .filter-table table tbody a {cursor: pointer;}
+
+
+/*用户设置 end*/

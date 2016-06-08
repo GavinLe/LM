@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>设置</title>
+    <link rel="stylesheet" href="../../libs/loading/loading.css" type="text/css"/>
+    <link rel="stylesheet" href="../../css/css.css" type="text/css" />
+</head>
+<body>
+	<div class="user-settings">
+		<p class="title">设置</p>
+		<div class="content">
+			<div class="account" hidden="hidden">
+				<p>帐号信息</p>
+				<div>
+					<p>注册手机号码:<span id='settings-phone'></span><a>&nbsp;&nbsp;修改密码</a></p>
+				</div>
+			</div>
+
+			<div class='company-info'>
+				<p>公司认证信息</p>
+				<div class="unverified hidden">
+					<p>未认证 &nbsp;&nbsp;<a>目前只能联系客服进行人工认证, 官方QQ群号:287789908 </a></p>
+				</div>
+				<div class="verified hidden">
+					<p>
+						公司名称:&nbsp;&nbsp;<span id="company-name"></span>&nbsp;&nbsp;
+						公司网址:&nbsp;&nbsp;<span id="company-site"></span>
+					</p>
+					<p>
+						网站资源: <span id="site-resource"></span>
+					</p>
+				</div>
+			</div>
+
+			<div class="company-filter hidden" style="margin-top: 40px;">
+				<p >资源过滤器设置</p>
+				<div class="filter-content">
+					<fieldset class="role">
+						<legend>添加展示的资源品种</legend>
+						<div style="margin:20px">
+							资源品种: <select style="width: 80px;" id="productSelect"></select>
+							价格调整: <input type="radio" name="price" value="HIDE" checked="checked"/>隐藏价格
+									 <input type="radio" name="price" value="SHOW" />公开价格
+							<input style="windth:200px; height:24px;" type="text" name="add_price" placeholder="调价金额">
+							<button style="padding:8px; width:80px; text-align:center;" id="addFilter">添加</button>
+						</div>
+					</fieldset>
+
+					<div class="filter-table">
+						<table border="1px" cellpadding="0" cellspacing="0" align="center" style="width:100%;">
+							<thead>
+								<tr>
+									<th>资源品种</th>
+									<th>价格设置</th>
+									<th>添加时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- loading -->
+	<div class="loading hidden">
+	  <div class="rotate"></div>
+	</div>
+
+<script type="text/javascript">
+	window.$ = window.jQuery = require('../../libs/jQuery/jquery-1.11.3.min.js');
+	var electron = require('electron');
+    window.ipc = electron.ipcRenderer;
+	window._ = require('underscore');
+    var userInfo = ipc.sendSync('get user info');
+    var api = require('../../js/api.js');
+    var BM_CONFIG = api.readConfig();
+    var API_URL = BM_CONFIG.server.api;
+</script>
+<script src="../../js/utils.js"></script>
+<script src="../../libs/loading/loading.js" type="application/javascript"></script>
+<script src="../../libs/notice/notie.js" type="application/javascript"></script>
+<script src="../../js/account/settings.js" type="application/javascript"></script>
+<script>
+$(document).ready(function() {
+  // 加载 dialog 模板
+  $("#includedContent").load("../dialog.html");
+});
+</script>
+</body>
+</html>

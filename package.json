@@ -1,48 +1,53 @@
 {
   "name": "sgzs",
   "displayName": "搜钢助手",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "electronVersion": "1.2.0",
   "description": "搜钢助手",
-  "main": "src/main/main.js -p=prod",
+  "main": "src/main/main.js",
   "repository": "",
-  "author": {
-    "name": "sougang.me",
-    "email": "sougang@sougang.me",
-    "url": "http://sougang.me"
-  },
+  "author": "sougang.me",
   "scripts": {
     "build": "npm run package && npm run zip",
     "package": "node script/package.js",
     "release": "npm run build && npm run upload",
     "upload": "node script/upload.js",
     "zip": "node script/zip.js",
-    "dev": "npm install && electron src/main/main.js -p=dev",
-    "test": "npm install && electron src/main/main.js -p=test",
-    "prod": "npm install && electron src/main/main.js -p=prod",
+    "dev": "npm install && electron src/main/main.js -p=DEV",
+    "test": "npm install && electron src/main/main.js -p=TEST",
+    "prod": "npm install && electron src/main/main.js -p=PROD",
     "start": "npm install && electron ."
   },
-  "keywords": ["sougang"],
-  "author": "sougang.me",
+  "keywords": [
+    "sougang"
+  ],
   "license": "CC0-1.0",
   "dependencies": {
     "mustache": "*",
     "request": "^2.67.0",
     "underscore": "^1.8.3",
-    "yargs": "^4.6.0"
+    "fs-extra": "*",
+    "tarball-extract":"*",
+    "xlsx": "^0.8.0",
+    "materialize-css": "^0.97.6"
   },
   "devDependencies": {
     "del": "^2.2.0",
-    "electron-prebuilt": "0.37.5",
+    "electron-packager": "^5.2.0",
+    "electron-prebuilt": "1.2.0",
     "gulp": "^3.9.1",
     "gulp-copy": "0.0.2",
     "gulp-debug": "^2.1.2",
     "gulp-electron": "0.0.17",
     "gulp-replace": "^0.5.4",
-    "gulp-uglify": "^1.5.3" ,
+    "gulp-uglify": "^1.5.3",
     "gulp-obfuscate": "*",
+    "gulp-rename": "*",
     "mustache": "*",
-    "yargs": "^4.6.0",
+    "node-zip-dir": "^1.0.2",
     "shelljs": "^0.6.0",
-    "electron-packager": "^5.2.0"
+    "gulp-zip": "^3.2.0",
+    "fs-extra": "*",
+    "yargs": "^4.6.0"
   }
 }

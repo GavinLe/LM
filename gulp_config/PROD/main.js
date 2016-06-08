@@ -2,21 +2,21 @@
 /**
  * Created by gavin on 16/4/19.
  */
-
-var argv = require('yargs').argv;
-global.ENV = argv.p || 'DEV';
-
 var electron = require('electron');
 var app = electron.app;
+global.ENV = 'PROD';
+
 var events = require('./utils/events.js').events;
 var update = require('./utils/update.js');
 
-app.on('ready', function (){
-	console.log('=============ready============');
-	update.update();
-	// events.emit('start');
+app.on('window-all-close', function(){
+    app.quit();
 });
 
+app.on('ready', function (){
+    update.update();
+    // events.emit('start');
+});
 app.on('quit', function() {
     settings.save();
     console.log('用户设置已保存，退出应用。');
@@ -27,7 +27,6 @@ mainEvents.init();
 
 // 读取用户设置
 var settings = require('./utils/settings.js');
-
 var settingConfig = settings.loadConfig();
 
 var token = require('./utils/token.js');

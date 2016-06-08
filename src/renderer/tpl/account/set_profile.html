@@ -53,11 +53,12 @@
         var shell = electron.shell;
         var _ = require('underscore');
         var api = require('../../js/api.js');
-        var userData = ipc.sendSync('get user data');
+        var remote = electron.remote;
+        var userData = remote.app.getPath('userData');
         var token = ipc.sendSync('get token');
     </script>
     <script src="../../libs/loading/loading.js" type="application/javascript"></script>
     <script src="../../libs/notice/notie.js" type="application/javascript"></script>
-    <script src="../../js/account.js" type="application/javascript"></script>
+    <script src="../../js/account/account.js" type="application/javascript"></script>
 </body>
 </html>

@@ -1,7 +1,10 @@
 /**
  * Created by gavin on 16/3/25.
  */
-
+var fs = require('fs');
+var path = require('path');
+var zlib = require('zlib');
+var request = require('request');
 
 $(document).ready(function(){
 
@@ -12,29 +15,64 @@ $(document).ready(function(){
      * 绑定下载pdf事件
      */
     $('#includedContent').on('click','.downloadPDF', function (){
-          var res_code = $(this).data('wid');
-          var order_num = $(this).data('order_num');
-          var url = $(this).data('url');
-          var body = $(this).data('body');
-          var params = {
-              wid:res_code,
-              order_num:order_num,
-              download_pdf_url:url,
-              download_pdf_body:body
-          };
-          loading.showLoading();
-          console.log('send msg pdf');
-          ipc.send('downloadPDF', params);
-          ipc.on('downloadpdfsuccessreply', function (event, arg) {
-              loading.hideLoading();
-              ipc.send('open pdf', arg);
-              ipc.removeListener('downloadpdfsuccessreply', arguments.callee);
-          });
-          ipc.on('downloadpdffailreply', function (event, message) {
-              loading.hideLoading();
-              notie.alert(2, '下载失败' + message);
-              ipc.removeListener('downloadpdffailreply', arguments.callee);
-          });
+
+        var res_code = $(this).data('wid');
+        var order_num = $(this).data('order_num');
+        var url = $(this).data('url');
+        var body = $(this).data('body');
+        var params = {
+          wid:res_code,
+          order_num:order_num,
+          download_pdf_url:url,
+          download_pdf_body:body
+        };
+
+        log_service.trackEvent('质保书下载', 'click_query', {'res_code': res_code, 'order_num':order_num});
+        var dialog = remote.dialog;
+        var pdfPathList = null;
+        if (_.isEmpty(pdfPathList)){
+            pdfPathList = dialog.showOpenDialog({
+                title:'质保书保存位置',
+                defaultPath:remote.app.getPath('desktop'),
+                filters: [{ name: 'pdf', extensions:['pdf']}],
+                properties: [ 'openFile', 'openDirectory' ]}
+            )
+        }else{
+            notie.alert(2, "窗口已被打开,请选择文件。");
+        }
+        if (pdfPathList.length > 0){
+            try{
+                loading.showLoading();
+                var pdfSavePath = pdfPathList[0];
+                var filename = params.order_num + '_' + params.wid + '_' + BMUtils.dateFormat(new Date(), 'yyyyMMddhhmmss') + '.pdf';
+                request.post({
+                  url: params.download_pdf_url,
+                  formData: params.download_pdf_body
+                }).on('response', function (response) {
+                    loading.hideLoading();
+                    if (response.statusCode !== 200) {
+                        notie.alert(3, '下载失败' + response.responseText);
+                        return;
+                    }
+                    var writeStream = fs.createWriteStream(path.join(pdfSavePath, filename));
+                    response.on('error', function(err){
+                        notie.alert(3, '下载失败' + response.responseText);
+                        return;
+                    });
+                    writeStream.on('error', function(err){
+                        notie.alert(3, '下载失败' + response.responseText);
+                        return;
+                    });
+                    response.on('end', function () {
+                        notie.alert(1, '下载成功' + filename);
+                    });
+                    response.pipe(writeStream);
+                });
+            }catch(e){
+                loading.hideLoading();
+                notie.alert(3, '下载失败' + e);
+            }
+        }
     });
 
     /**
@@ -110,7 +148,6 @@ $(document).ready(function(){
         tools.statusSearch(params);
     });
 
-
     /**
      *  绑定弹框显示质保书查询
      */
@@ -149,7 +186,6 @@ $(document).ready(function(){
         $('#realityProvider').val('');
         $('#realProviderSearch').modal({backdrop:true});
         $('.realProviderSearchParams').removeClass('hide');
-        log_service.trackEvent('真实货主查询', 'click_query');
     });
 
     /**
@@ -200,7 +236,7 @@ $(document).ready(function(){
         };
         tools.realProviderSearch(params);
 
-        log_service.trackEvent('真实货主查询', 'click_query');
+        //log_service.trackEvent('真实货主查询', 'click_query');
     });
 
     /**
@@ -212,7 +248,7 @@ $(document).ready(function(){
         $('#trademarkSearch .trademarkBtn ').removeClass('hide');
         $('#trademarkSearch').modal({backdrop:true});
 
-        log_service.trackEvent('牌号查询', 'click_query');
+        //log_service.trackEvent('牌号查询', 'click_query');
     });
 
     /**
@@ -236,7 +272,7 @@ $(document).ready(function(){
         $('#warehouse').empty();
         $('#warehouseSearch').modal({backdrop:true});
 
-        log_service.trackEvent('仓库查询', 'click_query');
+        //log_service.trackEvent('仓库查询', 'click_query');
     });
 
     /**
@@ -249,7 +285,6 @@ $(document).ready(function(){
             return;
         }
         tools.warehouseSearch(searchValue);
-
     });
 
     /**
@@ -261,7 +296,7 @@ $(document).ready(function(){
         $('#providerNameBody').empty();
         $('#providerNameSearch').modal({backdrop:true});
 
-        log_service.trackEvent('供应商查询', 'click_query');
+        //log_service.trackEvent('供应商查询', 'click_query');
     });
 
     /**
@@ -276,9 +311,197 @@ $(document).ready(function(){
         tools.providerSearch(name);
     });
 
+    /**
+     * 用户设置windows窗口
+     */
+    $('#openUserSettings').on('click', function(){
+        ipc.send('user settings');
+    });
+
     $('.sg-helper').on('click','#showContactBtn', function(){
         var list = $(this).data('contacts').split(';');
     });
+
+    $('#quitBtn').on('click', function(){
+        ipc.send('sign out');
+    });
+
+
+    // 获取本地资源单显示
+    $('.sg-helper').on('click','#addMyResource',function(){
+        var dialog = remote.dialog;
+        var execlFilePath = null;
+        if (_.isEmpty(execlFilePath)){
+            execlFilePath = dialog.showOpenDialog({
+                title:'请选择execl文件',
+                defaultPath:remote.app.getPath('desktop'),
+                filters: [{ name: 'execl', extensions:['xls', 'xlsx']}],
+                properties: [ 'openFile']}
+            )
+        }else{
+            notie.alert(2, "窗口已被打开,请选择文件。");
+        }
+
+        // 多文件 、多个sheet 获取数据预览
+        var transformResult = [];
+        if (execlFilePath && execlFilePath.length >= 1){
+            for (var i = 0, len = execlFilePath.length; i < len; i++) {
+                var itemWorkbook = XLSX.readFile(execlFilePath[i]);
+                itemWorkbook.SheetNames.forEach(function(sheetName) {
+                    var sheetData = XLSX.utils.sheet_to_json(itemWorkbook.Sheets[sheetName]);
+                    for (var k = 0, len = sheetData.length; k < len; k++) {
+                        // execl 和显示的key 转换
+                        var item = {
+                            'product_name': sheetData[k]['品种'] || '',
+                            'shop_sign': sheetData[k]['牌号'] || '',
+                            'manufacturer': sheetData[k]['钢厂'] || '',
+                            'spec': sheetData[k]['规格'] || '',
+                            'weight': sheetData[k]['重量'] || '',
+                            'provider_name': sheetData[k]['供应商'] || '',
+                            'warehouse_name': sheetData[k]['仓库'] || '',
+                            'price': sheetData[k]['价格'] || '',
+                            'pack_code': sheetData[k]['捆包号'] || '',
+                            'factory_res_code': sheetData[k]['钢厂资源号'] || '',
+                            'res_status': sheetData[k]['灯'] || '',
+                            'note': sheetData[k]['备注'] || '',
+                            'origin_url': sheetData[k]['地址'] || ''
+                        }
+                        transformResult.push(item);
+                    }
+                });
+            }
+            // 清除本次选择的窗口
+            execlFilePath = null;
+            //loadMyResources(null, transformResult);
+            var filePath = path.join(remote.app.getPath('userData'), userInfo.companyInfo.id + '.json');
+            fs.writeFile(filePath, JSON.stringify(transformResult) , 'utf8', function(err){
+                if (err) throw err;
+                var inp = fs.createReadStream(filePath);
+                var outFile = fs.createWriteStream(filePath+'.gz');
+                var gzip = zlib.createGzip();
+                inp.pipe(gzip).pipe(outFile);
+                // 显示 资源
+                isUploaded = false;
+                showMyResource();
+            });
+        }
+
+    });
+
+    // 显示我的资源
+    $('#showMyResource > a').on('click', function(){
+        showMyResource();
+    });
+
+    $('.sg-helper').on('click','#uploadMyResource',function(){
+        saveMyResource();
+    })
+
+    $('.sg-helper').on('click', '#downloadSGZS' , function(){
+        var dialog = remote.dialog;
+        var execlSavePath = dialog.showSaveDialog({
+            title:'文件保存的位置',
+            defaultPath:remote.app.getPath('desktop'),
+            filters: [{ name: 'execl', extensions:['xls', 'xlsx']}]
+        });
+        request(API_URL + '/static/sg_tmpl/sgzs_resource.xls').pipe(fs.createWriteStream(execlSavePath));
+    })
+
+    //获取最新的资源单
+    function getMyResource(){
+        var param ={
+            company_id: userInfo.companyInfo.id
+        }
+        loading.showLoading();
+        api.getMyResource(
+            param,
+            function (result) {
+                loading.hideLoading();
+                var rs = result;
+                if (rs.code == 0){
+                    //Save File to local
+                    var filePath = path.join(remote.app.getPath('userData'), userInfo.companyInfo.id + '.json');
+                    fs.writeFile(filePath, JSON.stringify(rs.data) , 'utf8', function(err){
+                        if (err) throw err;
+                        var inp = fs.createReadStream(filePath);
+                        var outFile = fs.createWriteStream(filePath+'.gz');
+                        var gzip = zlib.createGzip();
+                        inp.pipe(gzip).pipe(outFile);
+                        // 显示 资源
+                        isUploaded=true;
+                        showMyResource();
+                    });
+
+                }else{
+                    showMyResource();
+                }
+            },
+            function (code, err) {
+                loading.hideLoading();
+            })
+    }
+
+    //保存客户自己上传的资源
+    function saveMyResource(){
+        var param ={
+            user_id: userInfo.user_id,
+            company_id: userInfo.companyInfo.id
+        }
+        var check = $('.bm-red');
+        if (check.length > 0){
+            notie.alert(2, '数据存在问题, 请修改数据重新加载');
+        }else{
+            var filePath = path.join(remote.app.getPath('userData') , userInfo.companyInfo.id + '.json.gz');
+            api.saveMyResource(
+                param,
+                filePath,
+                function (result) {
+                    loading.hideLoading();
+                    var rs = result;
+                    if (rs.code == 0){
+                        notie.alert(1, "资源上传成功");
+                        $('#providerInfo').empty();
+                        isUploaded = true;
+                        loadProviderResources();  // 刷新供应商资源
+                    }else{
+                        notie.alert(3, result.message);
+                    }
+                },
+                function (code, err) {
+                    loading.hideLoading();
+                    notie.alert(3, err.message);
+                })
+        }
+    }
+
+    // 显示 我的资源
+    function showMyResource(){
+        fs.readFile(path.join(remote.app.getPath('userData') , userInfo.companyInfo.id + '.json') , 'utf-8', function (err, data) {
+            $('#example1').empty();
+            if (err != null) {
+                // 未上传 并且 未预览过
+                var tmpl = '<a id="addMyResource" class="btn btn-default" role="button">添加资源单预览</a><p>预览必须使用搜刚助手提供的模板, 如果您还未有模板请点击<a id="downloadSGZS">此处</a>下载</p>';
+
+                $('#providerInfo').empty().html(tmpl);
+            }else{
+                if(isUploaded==false){
+                    // 未上传
+                    var tmpl = '<p> 当前资源为预览资源并未上传, 仅自己可见。 如需跟多人可见, 请上传。'
+                    + '<a id="uploadMyResource" class="btn btn-default" role="button">上传资源</a>'
+                    + '&nbsp;<a id="addMyResource" class="btn btn-default" role="button">重新加载</a>'
+                    + '</p>';
+                    $('#providerInfo').empty().html(tmpl);
+                }else{
+                    // 已上传
+                    var tmpl = '<p> 当前资源为最近上传资源, 如需更新点击更新资源。'
+                    + '<a id="addMyResource" class="btn btn-default" role="button">更新资源</a>'
+                    + '</p>';
+                    $('#providerInfo').empty().html(tmpl);
+                }
+                loadMyResources(null, JSON.parse(data));
+            }
+        })
+    }
 
     function updateResource (headers, ds) {
         ds.getResourceHeaders(function (h) {
@@ -341,8 +564,9 @@ $(document).ready(function(){
         updateResource(headers, ds);
       }, 1000*60*5); // 1000*60*5
     }
-
-
+    /**
+    * 加载SHGT资源单
+    */
     function loadResources() {
       var $res = $('#oyResouces');
       var datastore = SgResourceDataStore();
@@ -362,9 +586,9 @@ $(document).ready(function(){
 
         // 取资源
         headers.forEach(function (row) {
-          var $r = $('#'+ row.resource_id);
+            var $r = $('#'+ row.resource_id);
 
-          datastore.getResource(row.resource_id, function(data){
+            datastore.getResource(row.resource_id, function(data){
               $r.removeClass('disabled');
               $($r).find('span[name="provider_name"]').removeClass('disabled').addClass('bm-pointer');
               $($r).find('span[name="provider_name"]').unbind();
@@ -394,12 +618,88 @@ $(document).ready(function(){
       });
     }
 
-    loadResources();
+    /**
+    * 加载 贸易商资源单
+    */
+    function loadProviderResources(){
+        var $res = $('#providerResource');
+        var datastore = SgResourceDataStore();
 
+        datastore.getProviderResourceHeaders(function(headers) {
+          // timer to check resource status
+          initCheckTimer(headers, datastore);
 
+          // 显示菜单栏
+          var template = $('#resourcesLiTemplate').html();
+          Mustache.parse(template);
+          var rendered = Mustache.render(template, {data: headers});
+          $res.empty().html(rendered);
+
+          var global_hot = null;
+
+          // 取资源
+          headers.forEach(function (row) {
+              var $r = $('#'+ row.resource_id);
+
+              datastore.getResource(row.resource_id, function(data){
+                $r.removeClass('disabled');
+                $($r).find('span[name="provider_name"]').removeClass('disabled').addClass('bm-pointer');
+                $($r).find('span[name="provider_name"]').unbind();
+                $($r).find('span[name="provider_name"]').click(function () {
+                  // 显示供应商信息
+                  var template_provider = $('#providerInfoTemplate').html();
+                  Mustache.parse(template_provider);
+                  var rendered_provider = Mustache.render(template_provider, row);
+                  $('#providerInfo').empty().html(rendered_provider);
+
+                  // 激活当前资源单
+                  $($r).siblings().removeClass('active select-li-bgc');
+                  $($r).addClass('active select-li-bgc');
+
+                  // 显示 资源内容
+                  var hot = global_hot;
+                  console.log("resource" + row.resource_id + " clicked.");
+                  if (hot != null) {
+                      hot.destroy();
+                      console.log("resource" + row.resource_id + " destroyed.");
+                  }
+                  global_hot = loadTable('example1', data);
+                  log_service.trackEvent('RESOURCE', 'click-item', {'resource_id': row.resource_id});
+                });
+            });
+          });
+        });
+    }
+
+    /**
+    * 加载自己的资源
+    */
+    function loadMyResources(targerId, data){
+        targerId = targerId || example1;
+        //TODO 加载自己的资源
+        var lmrt = require('../js/resource/loadMyResourceToTable.js');
+        lmrt.loadMyResoucesToTable('example1', data);
+    };
+
+    /**
+    *  上传资源单
+    */
+
+    function init(){
+        // load ouye 资源
+        loadResources();
+        loadProviderResources();
+        if (userInfo.role == 'ADMIN'){
+            // show my 资源
+            $('.is-admin').removeClass('hide');
+            // load my 资源
+            getMyResource();
+        }
+
+    }
+
+    // 是否已上传过文件
+    var isUploaded = false;
+    init();
 
 });
-
-
-
-

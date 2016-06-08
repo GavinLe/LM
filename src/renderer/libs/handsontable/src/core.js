@@ -4699,7 +4699,7 @@ DefaultSettings.prototype = {
    * row 0 has a header titled "A", it will have it no matter what you do with the table.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Boolean|String}
    * @example
    *
@@ -4728,7 +4728,7 @@ DefaultSettings.prototype = {
    * the example below.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Boolean|Array}
    * @example
    * ```js
@@ -4752,7 +4752,7 @@ DefaultSettings.prototype = {
    * See the demo for more information.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Object}
    */
   columnSummary: void 0,
@@ -4762,7 +4762,7 @@ DefaultSettings.prototype = {
    * The dropdown menu acts like the Context Menu, but is triggered by clicking the button in the header.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Boolean|Object|Array}
    */
   dropdownMenu: void 0,
@@ -4772,7 +4772,7 @@ DefaultSettings.prototype = {
    * It allows filtering the table data either by the built-in component or with the API.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Boolean}
    */
   filters: void 0,
@@ -4783,7 +4783,7 @@ DefaultSettings.prototype = {
    * In this case, the whole table becomes read-only.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Object}
    */
   ganttChart: void 0,
@@ -4798,7 +4798,7 @@ DefaultSettings.prototype = {
    * * the `onlyTrimmed` property defines if tooltips should be added only to headers, which content is trimmed by the header itself (the content being wider then the header).
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Boolean|Object}
    */
   headerTooltips: void 0,
@@ -4807,7 +4807,7 @@ DefaultSettings.prototype = {
    * Plugin allowing hiding of certain columns.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Boolean|Object}
    */
   hiddenColumns: void 0,
@@ -4817,7 +4817,7 @@ DefaultSettings.prototype = {
    * Plugin allowing hiding of certain rows.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Boolean|Object}
    */
   hiddenRows: void 0,
@@ -4827,7 +4827,7 @@ DefaultSettings.prototype = {
    * Allows creating a nested header structure, using the HTML's colspan attribute.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Array}
    */
   nestedHeaders: void 0,
@@ -4837,7 +4837,7 @@ DefaultSettings.prototype = {
    * Plugin allowing hiding of certain rows.
    *
    * @pro
-   * @since 1.0.0-beta1
+   * @since 2.0.0-beta1
    * @type {Boolean|Array}
    */
   trimRows: void 0,
